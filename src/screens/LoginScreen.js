@@ -8,16 +8,21 @@ import colors from '../styles/colors';
 import { globalStyles } from '../styles/globalStyles';
 import { loginStyles } from '../styles/LoginStyles';
 
-export default function LoginScreen() {
+export default function LoginScreen({ navigation, setIsLoggedIn }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 //fct flsh
   const handleLogin = () => {
-    setLoading(true);
-    setTimeout(() => setLoading(false), 2000);
-  };
+  setLoading(true);
+  setTimeout(() => {
+    setLoading(false);
+    setIsLoggedIn(true);
+    //     ↑
+    // bascule vers AppStack → HomeScreen !
+  }, 2000);
+};
 
   return (
     //conteneur ,ne pas cacher la zone de saisie 
