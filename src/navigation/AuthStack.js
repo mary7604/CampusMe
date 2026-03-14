@@ -1,15 +1,23 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import StartScreen from "../screens/StartScreen";  // ← ajoute !
 import LoginScreen from "../screens/LoginScreen";
 
 const Stack = createNativeStackNavigator();
 
 function AuthStack({ setIsLoggedIn }) {
-//                       ↑
-//         reçoit setIsLoggedIn depuis App.js
-
   return (
-    <Stack.Navigator initialRouteName="Login">
+    <Stack.Navigator initialRouteName="Start">
+    {/*                                   ↑
+                           Start = premier écran ! */}
 
+      {/* ÉCRAN START */}
+      <Stack.Screen
+        name="Start"
+        component={StartScreen}
+        options={{ headerShown: false }}
+      />
+
+      {/* ÉCRAN LOGIN */}
       <Stack.Screen
         name="Login"
         options={{ headerShown: false }}
@@ -18,7 +26,6 @@ function AuthStack({ setIsLoggedIn }) {
           <LoginScreen {...props} setIsLoggedIn={setIsLoggedIn} />
         )}
       </Stack.Screen>
-      {/* headerShown: false = cache la barre du haut */}
 
     </Stack.Navigator>
   );
