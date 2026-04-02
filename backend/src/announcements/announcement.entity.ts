@@ -14,6 +14,12 @@ export class Announcement {
   @Column()
   profName: string;
 
+  @Column({ default: 'all' })
+  targetGroup: string;
+
+  @Column({ default: 'all' })
+  targetFiliere: string;
+
   @CreateDateColumn()
   createdAt: Date;
 }

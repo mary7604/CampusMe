@@ -1,91 +1,136 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
-import { globalStyles } from '../styles/globalStyles';
-import colors from '../styles/colors';
+import React, { useState } from 'react';
+import {
+  View, Text, TextInput, TouchableOpacity, Alert,
+  ActivityIndicator, ScrollView, StyleSheet
+} from 'react-native';
 import announcementsApi from '../api/announcementsApi';
 import useAuth from '../hooks/useAuth';
 
-export default function AddAnnouncementScreen({ navigation }) {
+const FILIERES = ['all', 'Genie Informatique', 'Genie Civil', 'Genie Electrique'];
+const GROUPES  = ['all', 'Groupe A', 'Groupe B', 'Groupe C', 'Groupe D'];
+
+export default function AddAnnouncementScreen({ navigation, route }) {
   const { user } = useAuth();
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [loading, setLoading] = useState(false);
+  const editing = route.params?.announcement;
 
-  useEffect(() => {
-    if (user && user.role !== 'professeur') {
-      Alert.alert('Accès refusé', 'Seul les professeurs peuvent publier des annonces.', [
-        { text: 'OK', onPress: () => navigation.goBack() }
-      ]);
-    }
-  }, [user, navigation]);
+  const [title, setTitle]             = useState(editing?.title || '');
+  const [content, setContent]         = useState(editing?.content || '');
+  const [targetFiliere, setFiliere]   = useState(editing?.targetFiliere || 'all');
+  const [targetGroup, setGroup]       = useState(editing?.targetGroup || 'all');
+  const [loading, setLoading]         = useState(false);
 
-  const handlePost = async () => {
-    if (!title || !content) {
-      Alert.alert("Erreur", "Veuillez remplir tous les champs.");
+  const handleSubmit = async () => {
+    if (!title.trim() || !content.trim()) {
+      Alert.alert('Erreur', 'Le titre et le contenu sont obligatoires.');
       return;
     }
-    if (user && user.role !== 'professeur') {
-      Alert.alert("Erreur", "Seul un professeur peut publier une annonce.");
-      return;
-    }
+    const profName = `${user?.firstName || ''} ${user?.lastName || ''}`.trim();
+    const payload = { title, content, profName, targetGroup, targetFiliere };
 
     try {
       setLoading(true);
-      const profName = `${user?.firstName || ''} ${user?.lastName || ''}`.trim() || (user?.email ? user.email.split('@')[0] : 'Professeur');
-      await announcementsApi.create({ title, content, profName });
-      Alert.alert("Succès", "L'annonce a été publiée avec succès !");
+      if (editing) {
+        await announcementsApi.update(editing.id, payload);
+        Alert.alert('Succes', 'Annonce modifiee.');
+      } else {
+        await announcementsApi.create(payload);
+        Alert.alert('Succes', 'Annonce publiee.');
+      }
       navigation.goBack();
-    } catch (err) {
-      Alert.alert("Erreur", "Une erreur s'est produite lors de la publication.");
+    } catch (e) {
+      Alert.alert('Erreur', e.response?.data?.message || 'Une erreur est survenue.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <KeyboardAvoidingView style={globalStyles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <ScrollView contentContainerStyle={{ padding: 24, paddingTop: 60 }}>
-        
-        <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginBottom: 20 }}>
-          <Text style={{ color: colors.primary, fontSize: 16 }}>← Retour</Text>
-        </TouchableOpacity>
+    <ScrollView style={styles.container} contentContainerStyle={{ padding: 20 }}>
 
-        <Text style={[globalStyles.sectionTitle, { fontSize: 28, marginBottom: 8 }]}>Nouvelle Annonce</Text>
-        <Text style={{ color: colors.gray, marginBottom: 30 }}>Publiez une annonce visible par tous les étudiants.</Text>
+      <Text style={styles.label}>Titre</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Ex : Examen reporté"
+        value={title}
+        onChangeText={setTitle}
+      />
 
-        <View style={[globalStyles.inputContainer, { marginBottom: 20 }]}>
-          <Text style={globalStyles.inputIcon}>📌</Text>
-          <TextInput
-            style={globalStyles.input}
-            placeholder="Titre de l'annonce"
-            placeholderTextColor={colors.gray}
-            value={title}
-            onChangeText={setTitle}
-          />
-        </View>
+      <Text style={styles.label}>Contenu</Text>
+      <TextInput
+        style={[styles.input, styles.textarea]}
+        placeholder="Détails de l'annonce..."
+        value={content}
+        onChangeText={setContent}
+        multiline
+        numberOfLines={5}
+        textAlignVertical="top"
+      />
 
-        <View style={[globalStyles.inputContainer, { height: 120, alignItems: 'flex-start', paddingTop: 10, marginBottom: 30 }]}>
-          <Text style={[globalStyles.inputIcon, { marginTop: 4 }]}>📝</Text>
-          <TextInput
-            style={[globalStyles.input, { height: '100%', textAlignVertical: 'top' }]}
-            placeholder="Contenu de l'annonce..."
-            placeholderTextColor={colors.gray}
-            multiline
-            numberOfLines={4}
-            value={content}
-            onChangeText={setContent}
-          />
-        </View>
+      <Text style={styles.label}>Filière cible</Text>
+      <View style={styles.optionsRow}>
+        {FILIERES.map(f => (
+          <TouchableOpacity
+            key={f}
+            style={[styles.option, targetFiliere === f && styles.optionActive]}
+            onPress={() => setFiliere(f)}
+          >
+            <Text style={[styles.optionText, targetFiliere === f && styles.optionTextActive]}>
+              {f === 'all' ? 'Toutes' : f}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
 
-        <TouchableOpacity 
-          style={[globalStyles.primaryButton, loading && { opacity: 0.7 }]} 
-          onPress={handlePost}
-          disabled={loading}
-        >
-          {loading ? <ActivityIndicator color="#fff" /> : <Text style={globalStyles.primaryButtonText}>Publier l'annonce</Text>}
-        </TouchableOpacity>
+      <Text style={styles.label}>Groupe cible</Text>
+      <View style={styles.optionsRow}>
+        {GROUPES.map(g => (
+          <TouchableOpacity
+            key={g}
+            style={[styles.option, targetGroup === g && styles.optionActive]}
+            onPress={() => setGroup(g)}
+          >
+            <Text style={[styles.optionText, targetGroup === g && styles.optionTextActive]}>
+              {g === 'all' ? 'Tous' : g}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
 
-      </ScrollView>
-    </KeyboardAvoidingView>
+      <TouchableOpacity
+        style={[styles.button, loading && { opacity: 0.7 }]}
+        onPress={handleSubmit}
+        disabled={loading}
+      >
+        {loading
+          ? <ActivityIndicator color="#fff" />
+          : <Text style={styles.buttonText}>{editing ? 'Modifier' : 'Publier'}</Text>
+        }
+      </TouchableOpacity>
+
+    </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#F4F6F9' },
+  label: { fontSize: 13, fontWeight: '700', color: '#444', marginBottom: 6, marginTop: 16, textTransform: 'uppercase', letterSpacing: 0.5 },
+  input: {
+    backgroundColor: '#fff', borderRadius: 8, padding: 14,
+    fontSize: 15, color: '#1a1a2e', borderWidth: 1, borderColor: '#E0E0E0',
+  },
+  textarea: { minHeight: 120 },
+  optionsRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  option: {
+    paddingVertical: 8, paddingHorizontal: 14,
+    borderRadius: 6, borderWidth: 1, borderColor: '#E0E0E0',
+    backgroundColor: '#fff',
+  },
+  optionActive: { backgroundColor: '#0D47A1', borderColor: '#0D47A1' },
+  optionText: { fontSize: 13, color: '#555' },
+  optionTextActive: { color: '#fff', fontWeight: '600' },
+  button: {
+    backgroundColor: '#0D47A1', padding: 16,
+    borderRadius: 8, alignItems: 'center', marginTop: 32,
+  },
+  buttonText: { color: '#fff', fontWeight: '700', fontSize: 15 },
+});

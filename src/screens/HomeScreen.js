@@ -26,7 +26,7 @@ export default function HomeScreen({ navigation }) {
 
   const loadAnnouncements = async () => {
     try {
-      const res = await announcementsApi.getAll();
+      const res = await announcementsApi.getMy();
       setAnnouncements(res.data || []);
     } catch(err) {
       console.log('Erreur chargement annonces:', err);
