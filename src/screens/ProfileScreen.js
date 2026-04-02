@@ -2,15 +2,7 @@ import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import colors from '../styles/colors';
 import { globalStyles } from '../styles/globalStyles';
 import { profileStyles } from '../styles/ProfileStyles';
-
-const student = {
-  name: "Yasmine Benali",
-  email: "yasmine.benali@univ.ma",
-  filiere: "Génie Informatique",
-  niveau: "2ème Année",
-  groupe: "Groupe A",
-  matricule: "GI2024-042",
-};
+import useAuth from '../hooks/useAuth';
 
 const stats = [
   { value: "14.5", label: "Moyenne" },
@@ -26,7 +18,18 @@ const menuItems = [
   { label: "Évaluer l'application" },
 ];
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ navigation }) {
+  const { user, handleLogout } = useAuth();
+
+  const student = {
+    name: user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email : "Prénom Nom",
+    email: user ? user.email : "email@univ.ma",
+    filiere: user?.filiere || "Non précisée",
+    niveau: user?.niveau || "Non précisé",
+    groupe: user?.group || "N/A",
+    matricule: `MAT-${user?.id || '000'}`,
+  };
+
   return (
     <ScrollView
       style={globalStyles.container}
@@ -111,7 +114,7 @@ export default function ProfileScreen() {
         </View>
 
         {/* DÉCONNEXION */}
-        <TouchableOpacity style={profileStyles.logoutBtn}>
+        <TouchableOpacity style={profileStyles.logoutBtn} onPress={() => handleLogout(navigation)}>
           <Text style={profileStyles.logoutText}>
             Se déconnecter
           </Text>

@@ -10,11 +10,9 @@ export default function useAuth() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = async (navigation) => {
-    const result = await dispatch(loginThunk({ email, password }));
-    if (loginThunk.fulfilled.match(result)) {
-      navigation.replace('Main'); // Naviguer vers l'app principale
-    }
+  const handleLogin = async () => {
+    await dispatch(loginThunk({ email, password }));
+    // AppNavigator auto-routes, no nav call needed
   };
 
   const handleLogout = async (navigation) => {

@@ -22,4 +22,13 @@ export class GradesService {
 
     return { grades, average };
   }
+
+  async addGrade(studentId: number, data: any) {
+    const grade = this.gradesRepo.create({
+      ...data,
+      student: { id: studentId },
+    });
+    return this.gradesRepo.save(grade);
+  }
 }
+

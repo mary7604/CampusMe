@@ -1,0 +1,12 @@
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Announcement } from './announcement.entity';
+import { AnnouncementsService } from './announcements.service';
+import { AnnouncementsController } from './announcements.controller';
+
+@Module({
+  imports: [TypeOrmModule.forFeature([Announcement])],
+  controllers: [AnnouncementsController],
+  providers: [AnnouncementsService],
+})
+export class AnnouncementsModule {}

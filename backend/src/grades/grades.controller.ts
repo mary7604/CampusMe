@@ -1,4 +1,4 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseGuards, Req, UnauthorizedException } from '@nestjs/common';
 import { GradesService } from './grades.service';
 import { JwtAuthGuard } from '../auth/jwt.guard';
 
@@ -11,5 +11,20 @@ export class GradesController {
   @Get(':studentId')
   getGrades(@Param('studentId') studentId: string) {
     return this.gradesService.getGrades(+studentId);
+  }
+
+  @Post()
+  addGrade(@Body() body: any, @Req() req: any) {
+    if (req.user.role !== 'professeur') {
+      throw new UnauthorizedException('Seul un professeur peut ajouter une note');
+    }
+    const profName = body.professor || req.user.email;
+    return this.gradesService.addGrade(body.studentId, {
+      subject: body.subject,
+      note: body.note,
+      coef: body.coef,
+      semester: body.semester,
+      professor: profName,
+    });
   }
 }

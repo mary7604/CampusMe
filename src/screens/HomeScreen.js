@@ -1,11 +1,42 @@
+import React, { useState, useEffect } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity, StatusBar
+  View, Text, ScrollView, TouchableOpacity, StatusBar, ActivityIndicator
 } from 'react-native';
-import { homeStyles as styles, colors } from '../styles/HomeStyles'; // ← import depuis src\styles
+import { homeStyles as styles, colors } from '../styles/HomeStyles';
+import useAuth from '../hooks/useAuth';
+import announcementsApi from '../api/announcementsApi';
 
-export default function HomeScreen() {
-  const studentName = "Yasmine";
-  const today = "Samedi 22 Février 2026";
+export default function HomeScreen({ navigation }) {
+  const { user } = useAuth();
+  
+  const studentName = user ? (user.firstName || user.email.split('@')[0]) : "Étudiant";
+  const roleDisplay = user?.role === 'professeur' ? 'Professeur' : 'Étudiant';
+  
+  const [announcements, setAnnouncements] = useState([]);
+  const [loadingAnnouncements, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Écouter le focus pour recharger les annonces
+    const unsubscribe = navigation.addListener('focus', () => {
+      loadAnnouncements();
+    });
+    loadAnnouncements();
+    return unsubscribe;
+  }, [navigation]);
+
+  const loadAnnouncements = async () => {
+    try {
+      const res = await announcementsApi.getAll();
+      setAnnouncements(res.data || []);
+    } catch(err) {
+      console.log('Erreur chargement annonces:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const today = new Date().toLocaleDateString('fr-FR', {
+  weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+});
 
   const nextCourse = {
     subject:   "React Native",
@@ -19,12 +50,6 @@ export default function HomeScreen() {
     { label: "Présences", value: "85%" },
     { label: "Moyenne",   value: "14.5" },
     { label: "Cours",     value: "4"    },
-  ];
-
-  const announcements = [
-    { id: 1, title: "TP annulé jeudi",           prof: "Dr. Karim", time: "Il y a 2h" },
-    { id: 2, title: "Examen reporté au lundi",    prof: "Dr. Chantit",  time: "Il y a 5h" },
-    { id: 3, title: "Réunion de groupe vendredi", prof: "Dr. Amine", time: "Hier"      },
   ];
 
   const quickAccess = [
@@ -43,12 +68,11 @@ export default function HomeScreen() {
       {/*   prsnl */ }
       <StatusBar barStyle="light-content" backgroundColor={colors.dark} />
 
-      {/* ── HEADER ── */}
       <View style={styles.header}>
         <View style={styles.headerRow}>
           <View>
             <Text style={styles.greeting}>Bonjour, {studentName}</Text>
-            <Text style={styles.date}>{today}</Text>
+            <Text style={styles.date}>{today} • {roleDisplay}</Text>
           </View>
           <View style={styles.avatarRing}>
             <Text style={styles.avatarInitial}>{studentName.charAt(0)}</Text>
@@ -109,18 +133,24 @@ export default function HomeScreen() {
       {/* ── ANNONCES ── */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Annonces</Text>
-        {announcements.map((item) => (
-          <TouchableOpacity key={item.id} style={styles.announcementCard} activeOpacity={0.75}>
-            <View style={styles.dotBox}>
-              <View style={styles.dot} />
-            </View>
-            <View style={styles.announcementContent}>
-              <Text style={styles.announcementTitle}>{item.title}</Text>
-              <Text style={styles.announcementMeta}>{item.prof} · {item.time}</Text>
-            </View>
-            <Text style={styles.arrow}>›</Text>
-          </TouchableOpacity>
-        ))}
+        {loadingAnnouncements ? (
+          <ActivityIndicator color={colors.primary} style={{ marginTop: 20 }}/>
+        ) : announcements.length === 0 ? (
+          <Text style={{ textAlign: 'center', color: colors.gray, marginTop: 15 }}>Aucune annonce publiée.</Text>
+        ) : (
+          announcements.map((item) => (
+            <TouchableOpacity key={item.id} style={styles.announcementCard} activeOpacity={0.75}>
+              <View style={styles.dotBox}>
+                <View style={styles.dot} />
+              </View>
+              <View style={styles.announcementContent}>
+                <Text style={styles.announcementTitle}>{item.title}</Text>
+                <Text style={styles.announcementMeta}>{item.profName || 'Professeur'} · {new Date(item.createdAt).toLocaleDateString()}</Text>
+              </View>
+              <Text style={styles.arrow}>›</Text>
+            </TouchableOpacity>
+          ))
+        )}
       </View>
 
     </ScrollView>

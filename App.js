@@ -2,12 +2,16 @@ import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Text } from 'react-native';
+import { Text, View, ActivityIndicator } from 'react-native';
 
 import store from './src/store';
 
 import LoginScreen     from './src/screens/LoginScreen';
+import RegisterScreen  from './src/screens/RegisterScreen';
 import HomeScreen      from './src/screens/HomeScreen';
+import AppStack from './src/navigation/AppStack';
+import ProfStack from './src/navigation/ProfStack';
+import { useSelector } from 'react-redux';
 import MapScreen       from './src/screens/MapScreen';
 import ProfileScreen   from './src/screens/ProfileScreen';
 import TimetableScreen from './src/screens/TimetableScreen';
@@ -49,11 +53,29 @@ function MainTabs() {
 }
 
 function AppNavigator() {
+  const { isLoggedIn, user, loading } = useSelector(state => state.auth);
+
+  if (loading) {
+    return <NavigationContainer>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    </NavigationContainer>;
+  }
+
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Main"  component={MainTabs} />
+        {!isLoggedIn ? (
+          <>
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Register" component={RegisterScreen} />
+          </>
+        ) : user?.role === 'professeur' ? (
+          <Stack.Screen name="ProfMain" component={ProfStack} />
+        ) : (
+          <Stack.Screen name="Main" component={MainTabs} />
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

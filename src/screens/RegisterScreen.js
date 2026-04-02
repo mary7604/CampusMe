@@ -1,22 +1,41 @@
 import React, { useState } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity,
-  KeyboardAvoidingView, Platform, ActivityIndicator, ScrollView
+  KeyboardAvoidingView, Platform, ActivityIndicator, ScrollView, Alert
 } from 'react-native';
 import colors from '../styles/colors';
 import { globalStyles } from '../styles/globalStyles';
 import { loginStyles } from '../styles/LoginStyles';
-import useAuth from '../hooks/useAuth'; // ← hook Redux
+import useAuth from '../hooks/useAuth';
 
-export default function LoginScreen({ navigation }) {
-  const {
-    email, setEmail,
-    password, setPassword,
-    loading, error,
-    handleLogin,
-  } = useAuth();
-
+export default function RegisterScreen({ navigation }) {
+  const { loading, error, handleRegister } = useAuth();
+  
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [role, setRole] = useState('student');
+
+  const validateForm = () => {
+    if (!firstName.trim()) return 'Le prénom est requis';
+    if (!lastName.trim()) return 'Le nom est requis';
+    if (!email.trim()) return `L'email est requis`;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return 'Email invalide';
+    if (!password) return 'Le mot de passe est requis';
+    if (password.length < 6) return 'Mot de passe trop court (min 6 caractères)';
+    return null;
+  };
+
+  const onRegister = () => {
+    const errorMsg = validateForm();
+    if (errorMsg) {
+      // Set local error (useAuth error or local state, but use local for instant)
+      Alert.alert('Erreur de validation', errorMsg);
+      return;
+    }
+    handleRegister({ firstName, lastName, email, password, role }, navigation);
+  };
 
   return (
     <KeyboardAvoidingView
@@ -26,16 +45,15 @@ export default function LoginScreen({ navigation }) {
       <ScrollView showsVerticalScrollIndicator={false}>
 
         <View style={loginStyles.header}>
-          <Text style={loginStyles.logo}>🎓</Text>
+          <Text style={loginStyles.logo}>📝</Text>
           <Text style={loginStyles.appName}>CampusMe</Text>
-          <Text style={loginStyles.tagline}>Votre campus, dans votre poche</Text>
+          <Text style={loginStyles.tagline}>Rejoignez votre campus</Text>
         </View>
 
         <View style={loginStyles.form}>
-          <Text style={loginStyles.title}>Connexion</Text>
-          <Text style={loginStyles.subtitle}>Connectez-vous à votre espace {role === 'student' ? 'étudiant' : 'professeur'}</Text>
+          <Text style={loginStyles.title}>Inscription</Text>
+          <Text style={loginStyles.subtitle}>Créez votre espace {role === 'student' ? 'étudiant' : 'professeur'}</Text>
 
-          {/* Affiche l'erreur Redux */}
           {error && (
             <View style={{ backgroundColor: '#FFEBEE', borderRadius: 10, padding: 12, marginBottom: 15 }}>
               <Text style={{ color: colors.error, fontSize: 13 }}>⚠️ {error}</Text>
@@ -58,6 +76,28 @@ export default function LoginScreen({ navigation }) {
           </View>
 
           <View style={globalStyles.inputContainer}>
+            <Text style={globalStyles.inputIcon}>🧑</Text>
+            <TextInput
+              style={globalStyles.input}
+              placeholder="Prénom"
+              placeholderTextColor={colors.light}
+              value={firstName}
+              onChangeText={setFirstName}
+            />
+          </View>
+          
+          <View style={globalStyles.inputContainer}>
+            <Text style={globalStyles.inputIcon}>🧑</Text>
+            <TextInput
+              style={globalStyles.input}
+              placeholder="Nom"
+              placeholderTextColor={colors.light}
+              value={lastName}
+              onChangeText={setLastName}
+            />
+          </View>
+
+          <View style={globalStyles.inputContainer}>
             <Text style={globalStyles.inputIcon}>📧</Text>
             <TextInput
               style={globalStyles.input}
@@ -67,6 +107,7 @@ export default function LoginScreen({ navigation }) {
               onChangeText={setEmail}
               keyboardType="email-address"
               autoCapitalize="none"
+              autoCorrect={false}
             />
           </View>
 
@@ -82,19 +123,14 @@ export default function LoginScreen({ navigation }) {
             />
           </View>
 
-          <TouchableOpacity style={loginStyles.forgotContainer}>
-            <Text style={loginStyles.forgotText}>Mot de passe oublié ?</Text>
-          </TouchableOpacity>
-
-          {/* Bouton connecté au thunk Redux */}
           <TouchableOpacity
             style={[globalStyles.primaryButton, loading && loginStyles.disabled]}
-            onPress={() => handleLogin(navigation)}
+            onPress={onRegister}
             disabled={loading}
           >
             {loading
               ? <ActivityIndicator color={colors.white} />
-              : <Text style={globalStyles.primaryButtonText}>Se connecter</Text>
+              : <Text style={globalStyles.primaryButtonText}>Créer mon compte</Text>
             }
           </TouchableOpacity>
 
@@ -106,11 +142,11 @@ export default function LoginScreen({ navigation }) {
 
           <TouchableOpacity
             style={loginStyles.registerContainer}
-            onPress={() => navigation.navigate('Register')}
+            onPress={() => navigation.navigate('Login')}
           >
             <Text style={loginStyles.registerText}>
-              Pas encore de compte ?{'  '}
-              <Text style={loginStyles.registerLink}>S'inscrire</Text>
+              Déjà un compte ?{'  '}
+              <Text style={loginStyles.registerLink}>Se connecter</Text>
             </Text>
           </TouchableOpacity>
         </View>

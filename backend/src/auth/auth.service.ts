@@ -18,13 +18,20 @@ export class AuthService {
     firstName: string; lastName: string;
     email: string; password: string;
     filiere?: string; niveau?: string; group?: string;
+    role?: string;
   }) {
+    console.log('Register attempt:', data.email, data.role);
+    
     const exists = await this.usersRepo.findOne({ where: { email: data.email } });
-    if (exists) throw new ConflictException('Email déjà utilisé');
+    if (exists) {
+      console.log('Duplicate email:', data.email);
+      throw new ConflictException('Email déjà utilisé');
+    }
 
     const hashed = await bcrypt.hash(data.password, 10);
     const user = this.usersRepo.create({ ...data, password: hashed });
-    await this.usersRepo.save(user);
+    const saved = await this.usersRepo.save(user);
+    console.log('User created:', saved.id);
 
     return { message: 'Compte créé avec succès' };
   }

@@ -44,4 +44,33 @@ export const loginStyles = StyleSheet.create({
   registerContainer: { alignItems: 'center' },
   registerText: { color: colors.gray, fontSize: 15 },
   registerLink: { color: colors.dark, fontWeight: 'bold', fontSize: 15 },
+  roleToggleContainer: {
+    flexDirection: 'row',
+    backgroundColor: '#EAEAEA',
+    borderRadius: 12,
+    padding: 4,
+    marginBottom: 20,
+  },
+  roleToggleButton: {
+    flex: 1,
+    paddingVertical: 10,
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+  roleToggleButtonActive: {
+    backgroundColor: colors.white,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  roleToggleText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: colors.gray,
+  },
+  roleToggleTextActive: {
+    color: colors.primary,
+  },
 });

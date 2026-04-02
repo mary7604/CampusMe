@@ -1,8 +1,6 @@
 version: '3.8'
 
 services:
-
-  # ── Base de données PostgreSQL ─────────────────────────────────
   postgres:
     image: postgres:15-alpine
     container_name: campusme_db
@@ -18,7 +16,6 @@ services:
     networks:
       - campusme_network
 
-  # ── Backend NestJS ─────────────────────────────────────────────
   backend:
     build:
       context: .
@@ -34,6 +31,7 @@ services:
       DATABASE_PASSWORD: campusme123
       DATABASE_NAME: campusme
       JWT_SECRET: campusme_secret_jwt_2026
+      WT_EXPIRES_IN: 24h 
       PORT: 3000
     depends_on:
       - postgres
