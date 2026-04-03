@@ -1,13 +1,14 @@
 import axiosInstance from './axiosInstance';
 
 const coursesApi = {
-  // GET /courses/week/:group
-  getWeekCourses: (group) =>
-    axiosInstance.get(`/courses/week/${group}`),
+  getWeekCourses: () =>
+    axiosInstance.get('/courses/week'),
 
-  // GET /courses/today/:group
-  getTodayCourses: (group) =>
-    axiosInstance.get(`/courses/today/${group}`),
+  getTodayCourses: () =>
+    axiosInstance.get('/courses/today'),
+
+  seed: () =>
+    axiosInstance.post('/courses/seed'),
 };
 
 export default coursesApi;
