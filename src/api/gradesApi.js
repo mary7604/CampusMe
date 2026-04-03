@@ -1,17 +1,20 @@
 import axiosInstance from './axiosInstance';
 
 const gradesApi = {
-  // GET /grades/:studentId
   getGrades: (studentId) =>
     axiosInstance.get(`/grades/${studentId}`),
 
-  // GET /grades/:studentId/average
-  getAverage: (studentId) =>
-    axiosInstance.get(`/grades/${studentId}/average`),
+  getMyGrades: () =>
+    axiosInstance.get('/grades/me'),
 
-  // POST /grades
   addGrade: (data) =>
     axiosInstance.post('/grades', data),
+
+  updateGrade: (id, data) =>
+    axiosInstance.patch(`/grades/${id}`, data),
+
+  deleteGrade: (id) =>
+    axiosInstance.delete(`/grades/${id}`),
 };
 
 export default gradesApi;

@@ -7,6 +7,8 @@ import ManageAnnouncementsScreen from "../screens/prof/ManageAnnouncementsScreen
 import ManageGradesScreen from "../screens/prof/ManageGradesScreen";
 import GenerateQRScreen from "../screens/prof/GenerateQRScreen";
 import ScanQRScreen from "../screens/ScanQRScreen";
+import StudentGradesScreen from '../screens/prof/StudentGradesScreen';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +31,11 @@ export default function AppStack() {
       <Stack.Screen name="ManageGrades"        options={{ title: 'Notes saisies' }}          component={ManageGradesScreen} />
       <Stack.Screen name="GenerateQR"          options={{ title: 'QR Code de presence' }}   component={GenerateQRScreen} />
       <Stack.Screen name="ScanQR"              options={{ title: 'Scanner QR Code' }}        component={ScanQRScreen} />
+      <Stack.Screen
+  name="StudentGrades"
+  options={{ title: 'Notes de l\'etudiant' }}
+  component={StudentGradesScreen}
+/>
     </Stack.Navigator>
   );
 }

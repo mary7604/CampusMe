@@ -1,73 +1,191 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, TextInput, ActivityIndicator } from 'react-native';
-import { globalStyles } from '../../styles/globalStyles';
-import colors from '../../styles/colors';
+import {
+  View, Text, FlatList, TouchableOpacity,
+  ActivityIndicator, StyleSheet, TextInput
+} from 'react-native';
 import usersApi from '../../api/usersApi';
-import useAuth from '../../hooks/useAuth';
 
-export default function StudentListScreen({ navigation, route }) {
-  const { user } = useAuth();
+const FILIERES = ['Toutes', 'Genie Informatique', 'Genie Civil', 'Genie Electrique'];
+const GROUPES  = ['Tous', 'Groupe A', 'Groupe B', 'Groupe C', 'Groupe D'];
+
+export default function StudentListScreen({ navigation }) {
   const [students, setStudents] = useState([]);
-  const [search, setSearch] = useState('');
+  const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
-  const filteredStudents = students.filter(s => 
-    s.firstName.toLowerCase().includes(search.toLowerCase()) ||
-    s.lastName.toLowerCase().includes(search.toLowerCase()) ||
-    s.email.toLowerCase().includes(search.toLowerCase())
-  );
+  const [search, setSearch] = useState('');
+  const [selectedFiliere, setFiliere] = useState('Toutes');
+  const [selectedGroupe, setGroupe] = useState('Tous');
 
   useEffect(() => {
-    loadStudents();
+    load();
   }, []);
 
-  const loadStudents = async () => {
+  useEffect(() => {
+    applyFilters();
+  }, [students, search, selectedFiliere, selectedGroupe]);
+
+  const load = async () => {
     try {
       const res = await usersApi.getStudents();
       setStudents(res.data || []);
-    } catch (err) {
-      console.log('Students load error:', err);
+    } catch (e) {
+      console.log(e);
     } finally {
       setLoading(false);
     }
   };
 
-  const selectStudent = (student) => {
-    navigation.navigate('AddGrade', { student });
+  const applyFilters = () => {
+    let result = [...students];
+    if (selectedFiliere !== 'Toutes')
+      result = result.filter(s => s.filiere === selectedFiliere);
+    if (selectedGroupe !== 'Tous')
+      result = result.filter(s => s.group === selectedGroupe);
+    if (search.trim())
+      result = result.filter(s =>
+        `${s.firstName} ${s.lastName}`.toLowerCase().includes(search.toLowerCase()) ||
+        s.email.toLowerCase().includes(search.toLowerCase())
+      );
+    setFiltered(result);
   };
 
-  const renderStudent = ({ item }) => (
-    <TouchableOpacity style={{ 
-      flexDirection: 'row', padding: 20, borderBottomWidth: 1, borderBottomColor: colors.gray+'20' 
-    }} onPress={() => selectStudent(item)}>
-      <View style={{ width: 60, height: 60, borderRadius: 30, backgroundColor: colors.primary+'20', justifyContent: 'center', alignItems: 'center', marginRight: 15 }}>
-        <Text style={{ fontSize: 24 }}>{item.firstName.charAt(0)}{item.lastName.charAt(0)}</Text>
-      </View>
-      <View style={{ flex: 1 }}>
-        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{item.firstName} {item.lastName}</Text>
-        <Text style={{ color: colors.gray, fontSize: 14 }}>{item.email}</Text>
-        <Text style={{ color: colors.secondary, fontSize: 14 }}>{item.filiere} - {item.niveau} {item.group}</Text>
-      </View>
-      <Text style={{ color: colors.primary, fontWeight: 'bold' }}>›</Text>
-    </TouchableOpacity>
+  if (loading) return (
+    <View style={styles.centered}>
+      <ActivityIndicator size="large" color="#0D47A1" />
+    </View>
   );
 
-  if (loading) return <ActivityIndicator style={{ flex: 1, justifyContent: 'center' }} color={colors.primary} />;
-
   return (
-    <View style={globalStyles.container}>
-      <TextInput
-        style={[globalStyles.input, { margin: 20, paddingLeft: 50, backgroundColor: colors.gray+'10' }]}
-        placeholder="Rechercher un étudiant..."
-        value={search}
-        onChangeText={setSearch}
-      />
+    <View style={styles.container}>
+
+      {/* Recherche */}
+      <View style={styles.searchBox}>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Rechercher un etudiant..."
+          value={search}
+          onChangeText={setSearch}
+        />
+      </View>
+
+      {/* Filtre filiere */}
+      <Text style={styles.filterLabel}>Filière</Text>
       <FlatList
-        data={filteredStudents}
-        keyExtractor={item => item.id.toString()}
-        renderItem={renderStudent}
-        ListEmptyComponent={<Text style={{ textAlign: 'center', color: colors.gray, marginTop: 50 }}>Aucun étudiant trouvé.</Text>}
+        horizontal
+        data={FILIERES}
+        keyExtractor={i => i}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ paddingHorizontal: 16, gap: 8, marginBottom: 8 }}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={[styles.chip, selectedFiliere === item && styles.chipActive]}
+            onPress={() => setFiliere(item)}
+          >
+            <Text style={[styles.chipText, selectedFiliere === item && styles.chipTextActive]}>
+              {item}
+            </Text>
+          </TouchableOpacity>
+        )}
       />
+
+      {/* Filtre groupe */}
+      <Text style={styles.filterLabel}>Groupe</Text>
+      <FlatList
+        horizontal
+        data={GROUPES}
+        keyExtractor={i => i}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ paddingHorizontal: 16, gap: 8, marginBottom: 12 }}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={[styles.chip, selectedGroupe === item && styles.chipActive]}
+            onPress={() => setGroupe(item)}
+          >
+            <Text style={[styles.chipText, selectedGroupe === item && styles.chipTextActive]}>
+              {item}
+            </Text>
+          </TouchableOpacity>
+        )}
+      />
+
+      <Text style={styles.resultCount}>{filtered.length} etudiant(s)</Text>
+
+      {/* Liste */}
+      <FlatList
+        data={filtered}
+        keyExtractor={item => item.id.toString()}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 20 }}
+        ListEmptyComponent={
+          <View style={styles.empty}>
+            <Text style={styles.emptyText}>Aucun etudiant trouve.</Text>
+          </View>
+        }
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.row}
+            onPress={() => navigation.navigate('AddGrade', { student: item })}
+          >
+            <View style={styles.avatar}>
+              <Text style={styles.avatarText}>
+                {item.firstName.charAt(0)}{item.lastName.charAt(0)}
+              </Text>
+            </View>
+            <View style={styles.info}>
+              <Text style={styles.name}>{item.firstName} {item.lastName}</Text>
+              <Text style={styles.meta}>{item.filiere} — {item.group}</Text>
+              <Text style={styles.email}>{item.email}</Text>
+            </View>
+            <Text style={styles.arrow}>›</Text>
+          </TouchableOpacity>
+        )}
+      />
+
     </View>
   );
 }
 
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#F4F6F9' },
+  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  empty: { alignItems: 'center', marginTop: 40 },
+  emptyText: { color: '#888', fontSize: 15 },
+
+  searchBox: { padding: 16, paddingBottom: 8 },
+  searchInput: {
+    backgroundColor: '#fff', borderRadius: 8, padding: 12,
+    fontSize: 15, borderWidth: 1, borderColor: '#E0E0E0',
+  },
+  filterLabel: {
+    fontSize: 11, fontWeight: '700', color: '#888',
+    textTransform: 'uppercase', letterSpacing: 0.5,
+    paddingHorizontal: 16, marginBottom: 6, marginTop: 4,
+  },
+  chip: {
+    paddingVertical: 6, paddingHorizontal: 14,
+    borderRadius: 20, borderWidth: 1, borderColor: '#E0E0E0',
+    backgroundColor: '#fff',
+  },
+  chipActive: { backgroundColor: '#0D47A1', borderColor: '#0D47A1' },
+  chipText: { fontSize: 13, color: '#555' },
+  chipTextActive: { color: '#fff', fontWeight: '600' },
+  resultCount: {
+    fontSize: 12, color: '#888',
+    paddingHorizontal: 16, marginBottom: 8,
+  },
+  row: {
+    flexDirection: 'row', alignItems: 'center',
+    backgroundColor: '#fff', borderRadius: 8,
+    padding: 14, marginBottom: 8, elevation: 1,
+  },
+  avatar: {
+    width: 44, height: 44, borderRadius: 22,
+    backgroundColor: '#E8EEF7',
+    justifyContent: 'center', alignItems: 'center', marginRight: 14,
+  },
+  avatarText: { fontWeight: '700', color: '#0D47A1', fontSize: 15 },
+  info: { flex: 1 },
+  name: { fontSize: 15, fontWeight: '600', color: '#1a1a2e' },
+  meta: { fontSize: 13, color: '#888', marginTop: 2 },
+  email: { fontSize: 12, color: '#aaa', marginTop: 1 },
+  arrow: { fontSize: 22, color: '#ccc' },
+});
