@@ -20,13 +20,28 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.imane1111.CampusMe",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-secure-store"
-    ]
+      "expo-secure-store",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#0D47A1"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "2bdb4272-5a30-48ab-bb84-6d4f0c8cb50d"
+      }
+    },
+    "owner": "imane1111"
   }
 }

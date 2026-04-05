@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Attendance } from './attendance.entity';
 
-const activeQRCodes = new Map<string, { courseId: number; expiresAt: Date }>();
+const activeQRCodes = new Map<string, { courseId: number; subject: string; expiresAt: Date }>();
 
 @Injectable()
 export class AttendanceService {
@@ -12,10 +12,10 @@ export class AttendanceService {
     private attendanceRepo: Repository<Attendance>,
   ) {}
 
-  generateQRCode(courseId: number): string {
+  generateQRCode(courseId: number, subject: string): string {
     const code = `FSTM-${courseId}-${Date.now()}`;
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
-    activeQRCodes.set(code, { courseId, expiresAt });
+    activeQRCodes.set(code, { courseId, subject, expiresAt });
     return code;
   }
 
@@ -27,6 +27,7 @@ export class AttendanceService {
 
     const attendance = this.attendanceRepo.create({
       student: { id: studentId },
+      subject: qr.subject || 'Cours',
       qrCode: code,
       status: 'present',
     });
@@ -35,10 +36,40 @@ export class AttendanceService {
     return { message: 'Presence enregistree' };
   }
 
-  getHistory(studentId: number) {
-    return this.attendanceRepo.find({
+  async getHistory(studentId: number) {
+    const records = await this.attendanceRepo.find({
       where: { student: { id: studentId } },
       order: { date: 'DESC' },
     });
+
+    const total = records.length;
+    const present = records.filter(r => r.status === 'present').length;
+    const absent = total - present;
+    const rate = total > 0 ? Math.round((present / total) * 100) : 0;
+
+    return { records, total, present, absent, rate };
+  }
+
+  async seedAttendances(studentId: number) {
+    const count = await this.attendanceRepo.count({
+      where: { student: { id: studentId } },
+    });
+    if (count > 0) return { message: 'Deja seede' };
+
+    const subjects = ['Algorithmique', 'React Native', 'Base de donnees', 'Mathematiques', 'Reseaux'];
+    const records = [];
+
+    for (let i = 0; i < 20; i++) {
+      records.push(this.attendanceRepo.create({
+        student: { id: studentId },
+        subject: subjects[i % subjects.length],
+        status: i % 5 === 0 ? 'absent' : 'present',
+        qrCode: `TEST-${i}`,
+        date: new Date(Date.now() - i * 24 * 60 * 60 * 1000),
+      }));
+    }
+
+    await this.attendanceRepo.save(records);
+    return { message: '20 presences inserees' };
   }
 }

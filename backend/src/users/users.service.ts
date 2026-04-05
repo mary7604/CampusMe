@@ -16,5 +16,10 @@ export class UsersService {
       select: ['id', 'firstName', 'lastName', 'email', 'filiere', 'niveau', 'group'],
     });
   }
+
+  async savePushToken(userId: number, pushToken: string) {
+  await this.usersRepository.update(userId, { pushToken });
+  return { message: 'Token sauvegardé' };
+}
 }
 

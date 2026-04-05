@@ -7,6 +7,8 @@ import useAuth from '../hooks/useAuth';
 import announcementsApi from '../api/announcementsApi';
 import coursesApi from '../api/coursesApi';
 import gradesApi from '../api/gradesApi';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import notificationService from '../services/notificationService';
 
 export default function HomeScreen({ navigation }) {
   const { user } = useAuth();
@@ -36,6 +38,17 @@ export default function HomeScreen({ navigation }) {
       ]);
 
       setAnnouncements(annRes.data || []);
+      // Vérifier nouvelles annonces
+const newAnnouncements = annRes.data || [];
+const lastCount = await AsyncStorage.getItem('last_announcements_count');
+const lastNum = lastCount !== null ? parseInt(lastCount) : newAnnouncements.length;
+if (newAnnouncements.length > lastNum) {
+  notificationService.sendLocalNotification(
+    'Nouvelle annonce',
+    `${newAnnouncements.length - lastNum} nouvelle(s) annonce(s) de vos professeurs.`
+  );
+}
+await AsyncStorage.setItem('last_announcements_count', String(newAnnouncements.length));
 
       // Prochain cours = premier cours du jour dont l'heure n'est pas passée
       const now = new Date();
@@ -57,12 +70,13 @@ export default function HomeScreen({ navigation }) {
     }
   };
 
+  
   const quickAccess = [
-    { label: 'Emploi\ndu temps',  screen: 'Timetable' },
-    { label: 'Campus\nNavigator', screen: 'Map' },
-    { label: 'Scanner\nQR Code',  screen: 'ScanQR' },
-    { label: 'Mes\nNotes',        screen: 'Grades' },
-  ];
+  { label: 'Emploi\ndu temps',  screen: 'Timetable' },
+  { label: 'Campus\nNavigator', screen: 'Map' },
+  { label: 'Mes\nPresences',    screen: 'Attendance' },
+  { label: 'Mes\nNotes',        screen: 'Grades' },
+];
 
   return (
     <ScrollView

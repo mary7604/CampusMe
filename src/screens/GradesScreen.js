@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import colors from '../styles/colors';
 import { globalStyles } from '../styles/globalStyles';
 import { gradesStyles } from '../styles/GradesStyles';
 import useGrades from '../hooks/useGrades';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import notificationService from '../services/notificationService';
 
 function getColor(note) {
   if (note >= 16) return colors.success;
@@ -21,6 +23,21 @@ function getStatus(note) {
 
 export default function GradesScreen() {
   const { grades, average, loading, error } = useGrades();
+  useEffect(() => {
+  const checkNewGrades = async () => {
+    if (grades.length === 0) return;
+    const lastCount = await AsyncStorage.getItem('last_grades_count');
+const lastNum = lastCount !== null ? parseInt(lastCount) : grades.length;
+if (grades.length > lastNum) {
+      notificationService.sendLocalNotification(
+        'Nouvelle note disponible',
+        `${grades.length - lastNum} nouvelle(s) note(s) ajoutée(s) par vos professeurs.`
+      );
+    }
+    await AsyncStorage.setItem('last_grades_count', String(grades.length));
+  };
+  checkNewGrades();
+}, [grades]);
   const [semester, setSemester] = useState('S1');
 
   const filtered = grades.filter(g =>

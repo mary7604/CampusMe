@@ -5,6 +5,8 @@ import { globalStyles } from '../styles/globalStyles';
 import { timetableStyles } from '../styles/TimetableStyles';
 import coursesApi from '../api/coursesApi';
 import { useSelector } from 'react-redux';
+import notificationService from '../services/notificationService';
+import * as Notifications from 'expo-notifications';
 
 const DAYS = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
 
@@ -35,6 +37,9 @@ export default function TimetableScreen({ navigation }) {
         return acc;
       }, {});
       setWeekCourses(grouped);
+      const todayIndex = new Date().getDay() === 0 ? 5 : new Date().getDay() - 1;
+const todayList = grouped[todayIndex] || [];
+scheduleCoursNotifications(todayList);
     } catch (e) {
       console.log('Erreur cours:', e);
     } finally {
@@ -56,6 +61,27 @@ export default function TimetableScreen({ navigation }) {
     });
   };
   const weekDates = getWeekDates();
+  const scheduleCoursNotifications = async (courses) => {
+  await notificationService.cancelAll();
+  const { status } = await Notifications.requestPermissionsAsync();
+  if (status !== 'granted') return;
+
+  const now = new Date();
+  courses.forEach(course => {
+    const startTime = course.time?.split(' - ')[0];
+    if (!startTime) return;
+    const [h, m] = startTime.split(':').map(Number);
+    const courseDate = new Date();
+    courseDate.setHours(h, m + 1, 0, 0); // dans 1 minute
+    if (courseDate > now) {
+      notificationService.scheduleNotification(
+        'Cours dans 15 minutes',
+        `${course.subject} — ${course.room}`,
+        courseDate
+      );
+    }
+  });
+};
 
   if (loading) return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

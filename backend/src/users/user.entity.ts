@@ -29,6 +29,9 @@ export class User {
   @Column({ default: 'Groupe A' })
   group: string;
 
+  @Column({ nullable: true })
+pushToken: string;
+
   @CreateDateColumn()
   createdAt: Date;
 }

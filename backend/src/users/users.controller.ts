@@ -12,4 +12,9 @@ export class UsersController {
     // Prof only - already guarded by JWT
     return this.usersService.getStudents();
   }
+
+  @Post('push-token')
+savePushToken(@Body() body: { pushToken: string }, @Req() req: any) {
+  return this.usersService.savePushToken(req.user.sub, body.pushToken);
+}
 }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "587261263246",
+    "project_id": "campusme-5072d",
+    "storage_bucket": "campusme-5072d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:587261263246:android:a8b04354d9b02d33cbf8df",
+        "android_client_info": {
+          "package_name": "com.imane1111.CampusMe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAO4a2aHQWWhjaX9QRHVMIF114wq_5Ikc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginThunk, logoutThunk, registerThunk } from '../store/thunks/authThunk';
+import notificationService from '../services/notificationService';
+import axiosInstance from '../api/axiosInstance';
 
 // Hook useAuth — sépare la logique UI de la logique métier
 export default function useAuth() {
@@ -11,9 +13,23 @@ export default function useAuth() {
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
-    await dispatch(loginThunk({ email, password }));
-    // AppNavigator auto-routes, no nav call needed
-  };
+  const result = await dispatch(loginThunk({ email, password }));
+  if (loginThunk.fulfilled.match(result)) {
+    try {
+      console.log('Récupération du push token...');
+      const token = await notificationService.getPushToken();
+      console.log('Push token:', token);
+      if (token) {
+        // Attendre un peu que le token JWT soit bien stocké
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        const response = await axiosInstance.post('/users/push-token', { pushToken: token });
+        console.log('Token sauvegardé !', response.data);
+      }
+    } catch (e) {
+      console.log('Push token error:', e.response?.data || e.message || e);
+    }
+  }
+};
 
   const handleLogout = async (navigation) => {
     await dispatch(logoutThunk());
