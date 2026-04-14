@@ -21,7 +21,7 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.imane1111.CampusMe",
+      "package": "com.mary_sam.CampusMe",
       "googleServicesFile": "./google-services.json"
     },
     "web": {
@@ -39,9 +39,9 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "2bdb4272-5a30-48ab-bb84-6d4f0c8cb50d"
+        "projectId": "e72b066d-0b7b-46f0-a4d2-ca46c14ef315"
       }
     },
-    "owner": "imane1111"
+    "owner": "mary_sam"
   }
 }
