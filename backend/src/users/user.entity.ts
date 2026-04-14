@@ -30,7 +30,10 @@ export class User {
   group: string;
 
   @Column({ nullable: true })
-pushToken: string;
+  departement: string;
+
+  @Column({ nullable: true })
+  pushToken: string;
 
   @CreateDateColumn()
   createdAt: Date;

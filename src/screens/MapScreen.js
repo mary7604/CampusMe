@@ -12,29 +12,27 @@ const FSTM_CENTER = { latitude: 33.70651, longitude: -7.35316 };
 
 const CAMPUS_PLACES = [
   // AMPHITHÉÂTRES
-  { id: 1,  name: "Amphi Ω (Omega)",   icon: "🎓", color: "#0D47A1", latitude: 33.70700, longitude: -7.35290 },
-  { id: 2,  name: "Amphi λ (Lambda)",  icon: "🎓", color: "#0D47A1", latitude: 33.70720, longitude: -7.35260 },
-  { id: 3,  name: "Amphi δ (Delta)",   icon: "🎓", color: "#0D47A1", latitude: 33.70640, longitude: -7.35370 },
-  { id: 4,  name: "Amphi β (Beta)",    icon: "🎓", color: "#0D47A1", latitude: 33.70610, longitude: -7.35280 },
-  { id: 5,  name: "Amphi α (Alpha)",   icon: "🎓", color: "#0D47A1", latitude: 33.70600, longitude: -7.35250 },
+  { id: 1, name: "Amphi α (Alpha)",   latitude: 33.70580832238036 , longitude: -7.354582789019688 },
+  { id: 2, name: "Amphi β (Beta)",  latitude: 33.705886386682025,  longitude: -7.354393156346141 },
+  { id: 3, name: "Amphi δ (Delta)",   latitude: 33.7072, longitude: -7.3887 },
+  { id: 4, name: "Amphi λ (Lambda)",    latitude: 33.7074, longitude: -7.3885 },
+  { id: 5, name: "Amphi Ω (Omega) ",   latitude: 33.7076, longitude: -7.3883 },
+
   // BÂTIMENTS
-  { id: 6,  name: "BAT X",             icon: "🏫", color: "#1565C0", latitude: 33.70730, longitude: -7.35250 },
-  { id: 7,  name: "BAT Y",             icon: "🏫", color: "#1565C0", latitude: 33.70700, longitude: -7.35380 },
-  { id: 8,  name: "BAT C",             icon: "🏫", color: "#1565C0", latitude: 33.70630, longitude: -7.35240 },
-  { id: 9,  name: "BAT D",             icon: "🏫", color: "#1565C0", latitude: 33.70640, longitude: -7.35300 },
-  { id: 10, name: "BAT E",             icon: "🏫", color: "#1565C0", latitude: 33.70640, longitude: -7.35350 },
-  { id: 11, name: "BAT F",             icon: "🏫", color: "#1565C0", latitude: 33.70640, longitude: -7.35410 },
+  { id: 6,  name: "BAT X", latitude: 33.7062, longitude: -7.3895 },
+  { id: 7,  name: "BAT Y", latitude: 33.7064, longitude: -7.3893 },
+  { id: 8,  name: "BAT C", latitude: 33.7066, longitude: -7.3897 },
+  { id: 9,  name: "BAT D", latitude: 33.7060, longitude: -7.3899 },
+  { id: 10, name: "BAT E", latitude: 33.7058, longitude: -7.3901 },
+  { id: 11, name: "BAT F", latitude: 33.7056, longitude: -7.3903 },
+
   // SERVICES
-  { id: 12, name: "Décanat",           icon: "🏛️", color: "#1E88E5", latitude: 33.70620, longitude: -7.35310 },
-  { id: 13, name: "Bibliothèque",      icon: "📚", color: "#1565C0", latitude: 33.70600, longitude: -7.35210 },
-  { id: 14, name: "Scolarité",         icon: "📋", color: "#1E88E5", latitude: 33.70580, longitude: -7.35210 },
-  { id: 15, name: "Buvette",           icon: "☕", color: "#42A5F5", latitude: 33.70740, longitude: -7.35220 },
-  { id: 16, name: "Centre Copie",      icon: "🖨️", color: "#42A5F5", latitude: 33.70720, longitude: -7.35200 },
-  { id: 17, name: "Centre Recherche",  icon: "🔬", color: "#1E88E5", latitude: 33.70760, longitude: -7.35360 },
-  { id: 18, name: "Association AE",    icon: "🎯", color: "#0D47A1", latitude: 33.70750, longitude: -7.35210 },
-  // ENTRÉE
-  { id: 19, name: "Entrée Principale", icon: "🚪", color: "#0D47A1", latitude: 33.70550, longitude: -7.35310 },
-  { id: 20, name: "Parking",           icon: "🅿️", color: "#42A5F5", latitude: 33.70530, longitude: -7.35340 },
+  { id: 12, name: "Décanat",          latitude: 33.7080, longitude: -7.3880 },
+  { id: 13, name: "Bibliothèque",     latitude: 33.7078, longitude: -7.3882 },
+  { id: 14, name: "Scolarité",        latitude: 33.7076, longitude: -7.3884 },
+  { id: 15, name: "Buvette",          latitude: 33.7054, longitude: -7.3905 },
+  { id: 16, name: "Centre Copie",     latitude: 33.7052, longitude: -7.3907 },
+  { id: 17, name: "Centre Recherche", latitude: 33.7082, longitude: -7.3878 },
 ];
 
 function getDistance(lat1, lon1, lat2, lon2) {

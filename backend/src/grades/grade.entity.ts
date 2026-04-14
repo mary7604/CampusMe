@@ -15,3 +15,4 @@ export class Grade {
   @Column() semester: string;
   @Column() professor: string;
 }
+
