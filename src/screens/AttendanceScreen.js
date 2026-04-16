@@ -6,6 +6,8 @@ import {
 import attendanceApi from '../api/attendanceApi';
 import notificationService from '../services/notificationService';
 import * as Notifications from 'expo-notifications';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 const SEUIL_ALERTE = 85; 
 
@@ -59,6 +61,7 @@ export default function AttendanceScreen() {
   const alerte = rate < SEUIL_ALERTE && total > 0;
 
   return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#F4F6F9' }} edges={['top']}>
     <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 40 }}>
 
       {/* Résumé global */}
@@ -145,7 +148,8 @@ export default function AttendanceScreen() {
         )}
       </View>
 
-    </ScrollView>
+     </ScrollView>
+  </SafeAreaView>
   );
 }
 

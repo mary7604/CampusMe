@@ -1,6 +1,12 @@
 import { StyleSheet } from 'react-native';
 import colors from './colors';
 
+const font = {
+  regular:  '400',
+  semibold: '600',
+  bold:     '700',
+};
+
 export const profileStyles = StyleSheet.create({
 
   // HEADER
@@ -22,32 +28,60 @@ export const profileStyles = StyleSheet.create({
   },
   avatarEmoji: { fontSize: 44 },
   studentName: {
-    fontSize: 22, fontWeight: 'bold',
+    fontSize: 22, fontWeight: font.bold,
     color: colors.white, marginBottom: 4,
   },
-  studentEmail: { fontSize: 13, color: colors.light },
+  studentEmail: {
+    fontSize: 13, fontWeight: font.regular,
+    color: colors.light,
+  },
   badgeRow: {
-    flexDirection: 'row', marginTop: 12, gap: 8,
+    flexDirection: 'row',
+    marginTop: 12,
+    gap: 8,
+    flexWrap: 'wrap',            // 👈 retour ligne auto
+    justifyContent: 'center',
+    paddingHorizontal: 12,
   },
   badge: {
     backgroundColor: colors.primary,
-    borderRadius: 20, paddingHorizontal: 12, paddingVertical: 5,
+    borderRadius: 20,
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+    maxWidth: 180,               // 👈 largeur max pour texte long
   },
-  badgeText: { color: colors.white, fontSize: 12, fontWeight: '600' },
+  badgeText: {
+    color: colors.white,
+    fontSize: 12,
+    fontWeight: font.semibold,
+    textAlign: 'center',
+  },
 
   // STATS RAPIDES
   statsRow: {
     flexDirection: 'row', justifyContent: 'space-between',
-    marginHorizontal: 20, marginTop: 20, marginBottom: 10,
+    marginHorizontal: 16, marginTop: 20, marginBottom: 10,
   },
   statBox: {
     flex: 1, backgroundColor: colors.card,
-    borderRadius: 16, padding: 14, alignItems: 'center',
-    marginHorizontal: 5, borderWidth: 1, borderColor: colors.light,
-    elevation: 2,
+    borderRadius: 16, padding: 12, alignItems: 'center',
+    marginHorizontal: 4, borderWidth: 1, borderColor: colors.light,
+    elevation: 2, minHeight: 80,
   },
-  statValue: { fontSize: 22, fontWeight: 'bold', color: colors.dark },
-  statLabel: { fontSize: 11, color: colors.gray, marginTop: 4 },
+  statValue: {
+    fontSize: 18,
+    fontWeight: font.bold,
+    color: colors.dark,
+    textAlign: 'center',
+    width: '100%',
+  },
+  statLabel: {
+    fontSize: 10,
+    fontWeight: font.regular,
+    color: colors.gray,
+    marginTop: 6,
+    textAlign: 'center',
+  },
 
   // INFOS
   content: { paddingHorizontal: 20, paddingTop: 10 },
@@ -64,8 +98,11 @@ export const profileStyles = StyleSheet.create({
     flexDirection: 'row', alignItems: 'center', paddingVertical: 10,
   },
   infoIcon: { fontSize: 20, width: 36 },
-  infoLabel: { flex: 1, fontSize: 14, color: colors.gray },
-  infoValue: { fontSize: 14, fontWeight: '600', color: colors.dark },
+  infoLabel: { flex: 1, fontSize: 14, fontWeight: font.regular, color: colors.gray },
+  infoValue: {
+    fontSize: 14, fontWeight: font.semibold,
+    color: colors.dark, flexShrink: 1, textAlign: 'right',
+  },
 
   // MENU
   menuCard: {
@@ -82,8 +119,8 @@ export const profileStyles = StyleSheet.create({
     flexDirection: 'row', alignItems: 'center', padding: 16,
   },
   menuIcon: { fontSize: 22, width: 40 },
-  menuLabel: { flex: 1, fontSize: 15, color: colors.dark, fontWeight: '500' },
-  menuArrow: { fontSize: 22, color: colors.primary },
+  menuLabel: { flex: 1, fontSize: 15, fontWeight: font.semibold, color: colors.dark },
+  menuArrow: { fontSize: 22, fontWeight: font.regular, color: colors.primary },
 
   // LOGOUT
   logoutBtn: {
@@ -92,5 +129,5 @@ export const profileStyles = StyleSheet.create({
     alignItems: 'center', justifyContent: 'center',
     marginBottom: 30, borderWidth: 1.5, borderColor: colors.error,
   },
-  logoutText: { color: colors.error, fontSize: 16, fontWeight: 'bold' },
+  logoutText: { color: colors.error, fontSize: 16, fontWeight: font.bold },
 });

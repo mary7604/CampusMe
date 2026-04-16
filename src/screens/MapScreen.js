@@ -6,6 +6,8 @@ import {
 import MapView, { Marker, Circle, Callout } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { mapStyles } from '../styles/MapStyles';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 // ─── Coordonnées réelles FSTM Mohammedia ────────────────────────
 const FSTM_CENTER = { latitude: 33.70651, longitude: -7.35316 };
@@ -121,6 +123,7 @@ export default function MapScreen({ route }) {
   };
 
   return (
+<SafeAreaView style={{ flex: 1 }} edges={['top']}>
     <View style={mapStyles.container}>
 
       <View style={mapStyles.header}>
@@ -245,5 +248,6 @@ export default function MapScreen({ route }) {
         </ScrollView>
       )}
     </View>
+  </SafeAreaView>
   );
 }

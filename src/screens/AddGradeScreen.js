@@ -5,6 +5,8 @@ import { globalStyles } from '../styles/globalStyles';
 import colors from '../styles/colors';
 import gradesApi from '../api/gradesApi';
 import useAuth from '../hooks/useAuth';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 export default function AddGradeScreen({ navigation }) {
   const { user } = useAuth();
@@ -49,8 +51,9 @@ export default function AddGradeScreen({ navigation }) {
   };
 
   return (
+      <SafeAreaView style={{ flex: 1 }} edges={[]}>
     <KeyboardAvoidingView style={globalStyles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <ScrollView contentContainerStyle={{ padding: 24, paddingTop: 60 }}>
+      <ScrollView contentContainerStyle={{ padding: 24}}>
         
         <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginBottom: 20 }}>
           <Text style={{ color: colors.primary, fontSize: 16 }}>← Retour</Text>
@@ -73,7 +76,6 @@ export default function AddGradeScreen({ navigation }) {
         )}
 
         <View style={globalStyles.inputContainer}>
-          <Text style={globalStyles.inputIcon}>📘</Text>
           <TextInput
             style={globalStyles.input}
             placeholder="Matière (ex: Base de données)"
@@ -84,7 +86,6 @@ export default function AddGradeScreen({ navigation }) {
         </View>
 
         <View style={globalStyles.inputContainer}>
-          <Text style={globalStyles.inputIcon}>🎯</Text>
           <TextInput
             style={globalStyles.input}
             placeholder="Note (/20)"
@@ -96,7 +97,6 @@ export default function AddGradeScreen({ navigation }) {
         </View>
 
         <View style={globalStyles.inputContainer}>
-          <Text style={globalStyles.inputIcon}>✖️</Text>
           <TextInput
             style={globalStyles.input}
             placeholder="Coefficient"
@@ -108,7 +108,6 @@ export default function AddGradeScreen({ navigation }) {
         </View>
 
         <View style={[globalStyles.inputContainer, { marginBottom: 30 }]}>
-          <Text style={globalStyles.inputIcon}>📅</Text>
           <TextInput
             style={globalStyles.input}
             placeholder="Semestre (ex: S1, S2)"
@@ -128,5 +127,6 @@ export default function AddGradeScreen({ navigation }) {
 
       </ScrollView>
     </KeyboardAvoidingView>
+  </SafeAreaView>
   );
 }

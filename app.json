@@ -21,7 +21,7 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.imane1111.CampusMe",
+      "package": "com.kiramedaoudi.CampusMe",
       "googleServicesFile": "./google-services.json"
     },
     "web": {
@@ -35,13 +35,16 @@
           "icon": "./assets/icon.png",
           "color": "#0D47A1"
         }
-      ]
+      ],
+      "expo-font"
     ],
+    "owner": "kiramedaoudi",
     "extra": {
       "eas": {
-        "projectId": "2bdb4272-5a30-48ab-bb84-6d4f0c8cb50d"
+        "projectId": "59d029c8-1c0e-421b-af56-d0200915cc90"
       }
-    },
-    "owner": "imane1111"
+    }
   }
 }
+
+

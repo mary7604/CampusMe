@@ -1,10 +1,12 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { startStyles as styles } from '../styles/StartStyles';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 export default function StartScreen({ navigation }) {
   return (
+    <SafeAreaView style={{ flex: 1 }} edges={[]}>
     <View style={styles.container}>
-
       {/* ── PARTIE HAUTE — fond bleu ── */}
       <View style={styles.topSection}>
         <Text style={styles.emoji}>🎓</Text>
@@ -38,5 +40,6 @@ export default function StartScreen({ navigation }) {
       </View>
 
     </View>
+  </SafeAreaView>
   );
 }

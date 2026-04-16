@@ -7,6 +7,7 @@ import coursesApi from '../api/coursesApi';
 import { useSelector } from 'react-redux';
 import notificationService from '../services/notificationService';
 import * as Notifications from 'expo-notifications';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const DAYS = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
 
@@ -90,9 +91,11 @@ scheduleCoursNotifications(todayList);
   );
 
   return (
+    <SafeAreaView style={{ flex: 1 }} edges={['top']}>
     <View style={globalStyles.container}>
-
       <View style={globalStyles.header}>
+
+      
         <Text style={globalStyles.headerTitle}>Emploi du temps</Text>
         <Text style={globalStyles.headerSubtitle}>
           {user?.group || ''} — {user?.filiere || ''}
@@ -161,5 +164,6 @@ scheduleCoursNotifications(todayList);
         <View style={{ height: 30 }} />
       </ScrollView>
     </View>
+  </SafeAreaView>
   );
 }

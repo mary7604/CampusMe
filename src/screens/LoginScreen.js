@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity,
-  KeyboardAvoidingView, Platform, ActivityIndicator, ScrollView
+  KeyboardAvoidingView, Platform, ActivityIndicator, ScrollView, 
 } from 'react-native';
 import colors from '../styles/colors';
 import { globalStyles } from '../styles/globalStyles';
 import { loginStyles } from '../styles/LoginStyles';
 import useAuth from '../hooks/useAuth'; // ← hook Redux
+;
 
 export default function LoginScreen({ navigation }) {
   const {
@@ -58,7 +59,7 @@ export default function LoginScreen({ navigation }) {
           </View>
 
           <View style={globalStyles.inputContainer}>
-            <Text style={globalStyles.inputIcon}>📧</Text>
+            
             <TextInput
               style={globalStyles.input}
               placeholder="Email universitaire"
@@ -71,7 +72,7 @@ export default function LoginScreen({ navigation }) {
           </View>
 
           <View style={globalStyles.inputContainer}>
-            <Text style={globalStyles.inputIcon}>🔒</Text>
+          
             <TextInput
               style={globalStyles.input}
               placeholder="Mot de passe"

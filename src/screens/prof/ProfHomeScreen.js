@@ -6,6 +6,7 @@ import {
 import useAuth from '../../hooks/useAuth';
 import announcementsApi from '../../api/announcementsApi';
 import usersApi from '../../api/usersApi';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ProfHomeScreen({ navigation }) {
   const { user, handleLogout } = useAuth();
@@ -106,8 +107,8 @@ export default function ProfHomeScreen({ navigation }) {
   ];
 
   return (
+   <SafeAreaView style={{ flex: 1, backgroundColor: '#0D47A1' }} edges={['top']}>
     <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 40 }}>
-
       {/* En-tete */}
       <View style={styles.header}>
         <View style={styles.avatarCircle}>
@@ -159,7 +160,8 @@ export default function ProfHomeScreen({ navigation }) {
         <Text style={styles.logoutText}>Se déconnecter</Text>
       </TouchableOpacity>
 
-    </ScrollView>
+     </ScrollView>
+  </SafeAreaView>
   );
 }
 

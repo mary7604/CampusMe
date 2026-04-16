@@ -5,6 +5,8 @@ import useAuth from '../hooks/useAuth';
 import { useSelector } from 'react-redux';
 import gradesApi from '../api/gradesApi';
 import { useState, useEffect } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 const menuItems = [
   { label: "Notifications" },
@@ -44,8 +46,9 @@ export default function ProfileScreen({ navigation }) {
   ];
 
   return (
+    <SafeAreaView style={{ flex: 1 }} edges={['top']}>
     <ScrollView style={globalStyles.container} showsVerticalScrollIndicator={false}>
-
+     
       {/* HEADER */}
       <View style={profileStyles.header}>
         <View style={profileStyles.avatarCircle}>
@@ -134,6 +137,7 @@ export default function ProfileScreen({ navigation }) {
         </TouchableOpacity>
 
       </View>
-    </ScrollView>
+     </ScrollView>
+  </SafeAreaView>
   );
 }

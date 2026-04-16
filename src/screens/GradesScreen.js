@@ -6,6 +6,8 @@ import { gradesStyles } from '../styles/GradesStyles';
 import useGrades from '../hooks/useGrades';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import notificationService from '../services/notificationService';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 function getColor(note) {
   if (note >= 16) return colors.success;
@@ -65,8 +67,8 @@ if (grades.length > lastNum) {
   );
 
   return (
+    <SafeAreaView style={{ flex: 1 }} edges={['top']}>
     <View style={globalStyles.container}>
-
       <View style={globalStyles.header}>
         <Text style={globalStyles.headerTitle}>Mes Notes</Text>
         <Text style={globalStyles.headerSubtitle}>Année universitaire 2025 — 2026</Text>
@@ -144,5 +146,6 @@ if (grades.length > lastNum) {
         <View style={{ height: 30 }} />
       </ScrollView>
     </View>
+  </SafeAreaView>
   );
 }
