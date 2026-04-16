@@ -2,21 +2,20 @@ import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'rea
 import { globalStyles } from '../styles/globalStyles';
 import { profileStyles } from '../styles/ProfileStyles';
 import useAuth from '../hooks/useAuth';
-import { useSelector } from 'react-redux';
 import gradesApi from '../api/gradesApi';
 import { useState, useEffect } from 'react';
-
-const menuItems = [
-  { label: "Notifications" },
-  { label: "Changer le mot de passe" },
-  { label: "Langue" },
-  { label: "Aide et support" },
-];
 
 export default function ProfileScreen({ navigation }) {
   const { user, handleLogout } = useAuth();
   const [average, setAverage] = useState(null);
   const [loadingStats, setLoadingStats] = useState(true);
+
+  const menuItems = [
+    { label: "Notifications", onPress: () => navigation.navigate('Notifications') },
+    { label: "Changer le mot de passe", onPress: () => navigation.navigate('ForgotPassword') },
+    { label: "Langue", onPress: () => navigation.navigate('Language') },
+    { label: "Aide et support", onPress: () => navigation.navigate('Help') },
+  ];
 
   useEffect(() => {
     if (user?.id) {
@@ -44,9 +43,12 @@ export default function ProfileScreen({ navigation }) {
   ];
 
   return (
-    <ScrollView style={globalStyles.container} showsVerticalScrollIndicator={false}>
+    <ScrollView 
+      style={globalStyles.container} 
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{ paddingBottom: 120 }}
+    >
 
-      {/* HEADER */}
       <View style={profileStyles.header}>
         <View style={profileStyles.avatarCircle}>
           <Text style={profileStyles.avatarText}>
@@ -74,7 +76,6 @@ export default function ProfileScreen({ navigation }) {
         </View>
       </View>
 
-      {/* STATISTIQUES */}
       <View style={profileStyles.statsRow}>
         {loadingStats ? (
           <ActivityIndicator color="#0D47A1" style={{ flex: 1, paddingVertical: 20 }} />
@@ -90,16 +91,15 @@ export default function ProfileScreen({ navigation }) {
 
       <View style={profileStyles.content}>
 
-        {/* INFORMATIONS */}
         <Text style={globalStyles.sectionTitle}>Informations personnelles</Text>
         <View style={profileStyles.infoCard}>
           {[
-            { label: 'Nom complet',  value: fullName },
-            { label: 'Email',        value: user.email },
-            { label: 'Filière',      value: user.filiere || 'Non précisée' },
-            { label: 'Niveau',       value: user.niveau  || 'Non précisé' },
-            { label: 'Groupe',       value: user.group   || 'Non précisé' },
-            { label: 'Matricule',    value: `MAT-${user.id}` },
+            { label: 'Nom complet', value: fullName },
+            { label: 'Email', value: user.email },
+            { label: 'Filière', value: user.filiere || 'Non précisée' },
+            { label: 'Niveau', value: user.niveau || 'Non précisé' },
+            { label: 'Groupe', value: user.group || 'Non précisé' },
+            { label: 'Matricule', value: `MAT-${user.id}` },
           ].map((item, i, arr) => (
             <View
               key={i}
@@ -111,13 +111,13 @@ export default function ProfileScreen({ navigation }) {
           ))}
         </View>
 
-        {/* PARAMETRES */}
         <Text style={globalStyles.sectionTitle}>Paramètres</Text>
         <View style={profileStyles.menuCard}>
           {menuItems.map((item, i) => (
             <TouchableOpacity
               key={i}
               style={i === menuItems.length - 1 ? profileStyles.menuItemLast : profileStyles.menuItem}
+              onPress={item.onPress}
             >
               <Text style={profileStyles.menuLabel}>{item.label}</Text>
               <Text style={profileStyles.menuArrow}>›</Text>
@@ -125,7 +125,6 @@ export default function ProfileScreen({ navigation }) {
           ))}
         </View>
 
-        {/* DECONNEXION */}
         <TouchableOpacity
           style={profileStyles.logoutBtn}
           onPress={() => handleLogout(navigation)}

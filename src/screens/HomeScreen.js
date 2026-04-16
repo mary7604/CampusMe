@@ -43,10 +43,14 @@ const newAnnouncements = annRes.data || [];
 const lastCount = await AsyncStorage.getItem('last_announcements_count');
 const lastNum = lastCount !== null ? parseInt(lastCount) : newAnnouncements.length;
 if (newAnnouncements.length > lastNum) {
-  notificationService.sendLocalNotification(
-    'Nouvelle annonce',
-    `${newAnnouncements.length - lastNum} nouvelle(s) annonce(s) de vos professeurs.`
-  );
+  const notifAnnonce = await AsyncStorage.getItem('notif_annonce');
+  console.log('notif_annonce value:', notifAnnonce);
+  if (notifAnnonce === null || notifAnnonce === 'true') {
+    notificationService.sendLocalNotification(
+      'Nouvelle annonce',
+      `${newAnnouncements.length - lastNum} nouvelle(s) annonce(s) de vos professeurs.`
+    );
+  }
 }
 await AsyncStorage.setItem('last_announcements_count', String(newAnnouncements.length));
 

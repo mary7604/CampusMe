@@ -12,36 +12,29 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "ios": {
-      "supportsTablet": true
-    },
+    "ios": { "supportsTablet": true },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.mary_sam.CampusMe",
+      "package": "com.imane1111.CampusMe",
       "googleServicesFile": "./google-services.json"
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
+    "web": { "favicon": "./assets/favicon.png" },
     "plugins": [
       "expo-secure-store",
-      [
-        "expo-notifications",
-        {
-          "icon": "./assets/icon.png",
-          "color": "#0D47A1"
-        }
-      ]
+      ["expo-notifications", {
+        "icon": "./assets/icon.png",
+        "color": "#0D47A1"
+      }]
     ],
     "extra": {
       "eas": {
-        "projectId": "e72b066d-0b7b-46f0-a4d2-ca46c14ef315"
+        "projectId": "2bdb4272-5a30-48ab-bb84-6d4f0c8cb50d"
       }
     },
-    "owner": "mary_sam"
+    "owner": "imane1111"
   }
 }

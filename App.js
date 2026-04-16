@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Text, View, ActivityIndicator } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import store from './src/store';
 import LoginScreen from './src/screens/LoginScreen';
@@ -15,6 +16,10 @@ import GradesScreen from './src/screens/GradesScreen';
 import ScanQRScreen from './src/screens/ScanQRScreen';
 import ProfStack from './src/navigation/ProfStack';
 import AttendanceScreen from './src/screens/AttendanceScreen';
+import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen';
+import HelpScreen from './src/screens/HelpScreen';
+import NotificationsScreen from './src/screens/NotificationsScreen';
+import LanguageScreen from './src/screens/LanguageScreen';
 
 const Tab          = createBottomTabNavigator();
 const Stack        = createStackNavigator();
@@ -39,15 +44,15 @@ function MainTabs() {
       }}
     >
       <Tab.Screen name="Home" component={HomeScreen}
-        options={{ tabBarLabel: 'Accueil', tabBarIcon: ({ color }) => <Text style={{ fontSize: 22, color }}>🏠</Text> }} />
+        options={{ tabBarLabel: 'Accueil', tabBarIcon: ({ color }) => <Text style={{ fontSize: 22, color }}></Text> }} />
       <Tab.Screen name="Timetable" component={TimetableScreen}
-        options={{ tabBarLabel: 'EDT', tabBarIcon: ({ color }) => <Text style={{ fontSize: 22, color }}>📅</Text> }} />
+        options={{ tabBarLabel: 'EDT', tabBarIcon: ({ color }) => <Text style={{ fontSize: 22, color }}></Text> }} />
       <Tab.Screen name="Map" component={MapScreen}
-        options={{ tabBarLabel: 'Campus', tabBarIcon: ({ color }) => <Text style={{ fontSize: 22, color }}>🗺️</Text> }} />
+        options={{ tabBarLabel: 'Campus', tabBarIcon: ({ color }) => <Text style={{ fontSize: 22, color }}></Text> }} />
       <Tab.Screen name="Grades" component={GradesScreen}
-        options={{ tabBarLabel: 'Notes', tabBarIcon: ({ color }) => <Text style={{ fontSize: 22, color }}>📊</Text> }} />
+        options={{ tabBarLabel: 'Notes', tabBarIcon: ({ color }) => <Text style={{ fontSize: 22, color }}></Text> }} />
       <Tab.Screen name="Profile" component={ProfileScreen}
-        options={{ tabBarLabel: 'Profil', tabBarIcon: ({ color }) => <Text style={{ fontSize: 22, color }}>👤</Text> }} />
+        options={{ tabBarLabel: 'Profil', tabBarIcon: ({ color }) => <Text style={{ fontSize: 22, color }}></Text> }} />
     </Tab.Navigator>
   );
 }
@@ -62,6 +67,54 @@ function StudentNavigator() {
         options={{
           headerShown: true,
           headerTitle: 'Scanner QR Code',
+          headerStyle: { backgroundColor: '#0D47A1' },
+          headerTintColor: '#fff',
+          headerTitleStyle: { fontWeight: '600' },
+          headerTitleAlign: 'center',
+        }}
+      />
+      <StudentStack.Screen
+        name="ForgotPassword"
+        component={ForgotPasswordScreen}
+        options={{
+          headerShown: true,
+          headerTitle: 'Mot de passe',
+          headerStyle: { backgroundColor: '#0D47A1' },
+          headerTintColor: '#fff',
+          headerTitleStyle: { fontWeight: '600' },
+          headerTitleAlign: 'center',
+        }}
+      />
+      <StudentStack.Screen
+        name="Notifications"
+        component={NotificationsScreen}
+        options={{
+          headerShown: true,
+          headerTitle: 'Notifications',
+          headerStyle: { backgroundColor: '#0D47A1' },
+          headerTintColor: '#fff',
+          headerTitleStyle: { fontWeight: '600' },
+          headerTitleAlign: 'center',
+        }}
+      />
+      <StudentStack.Screen
+        name="Language"
+        component={LanguageScreen}
+        options={{
+          headerShown: true,
+          headerTitle: 'Langue',
+          headerStyle: { backgroundColor: '#0D47A1' },
+          headerTintColor: '#fff',
+          headerTitleStyle: { fontWeight: '600' },
+          headerTitleAlign: 'center',
+        }}
+      />
+      <StudentStack.Screen
+        name="Help"
+        component={HelpScreen}
+        options={{
+          headerShown: true,
+          headerTitle: 'Aide et support',
           headerStyle: { backgroundColor: '#0D47A1' },
           headerTintColor: '#fff',
           headerTitleStyle: { fontWeight: '600' },
@@ -104,6 +157,7 @@ function AppNavigator() {
           <>
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Register" component={RegisterScreen} />
+            <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
           </>
         ) : user?.role === 'professeur' ? (
           <Stack.Screen name="ProfMain" component={ProfStack} />
@@ -117,8 +171,10 @@ function AppNavigator() {
 
 export default function App() {
   return (
-    <Provider store={store}>
-      <AppNavigator />
-    </Provider>
+    <SafeAreaProvider>
+      <Provider store={store}>
+        <AppNavigator />
+      </Provider>
+    </SafeAreaProvider>
   );
 }

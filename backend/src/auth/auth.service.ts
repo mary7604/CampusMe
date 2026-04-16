@@ -48,4 +48,11 @@ export class AuthService {
     const { password: _, ...userWithoutPassword } = user;
     return userWithoutPassword;
   }
+  async resetPassword(email: string, newPassword: string) {
+  const user = await this.usersRepo.findOne({ where: { email } });
+  if (!user) throw new UnauthorizedException('Email introuvable');
+  const hashed = await bcrypt.hash(newPassword, 10);
+  await this.usersRepo.update(user.id, { password: hashed });
+  return { message: 'Mot de passe modifié avec succès' };
+}
 }

@@ -6,8 +6,9 @@ import {
 import attendanceApi from '../api/attendanceApi';
 import notificationService from '../services/notificationService';
 import * as Notifications from 'expo-notifications';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const SEUIL_ALERTE = 85; 
+const SEUIL_ALERTE = 75;
 
 export default function AttendanceScreen() {
   const [data, setData] = useState(null);
@@ -16,29 +17,28 @@ export default function AttendanceScreen() {
   useEffect(() => { load(); }, []);
 
   const load = async () => {
-  try {
-    const res = await attendanceApi.getHistory();
-    setData(res.data);
-    const { rate, total } = res.data;
-    console.log('rate:', rate, 'total:', total, 'seuil:', SEUIL_ALERTE);
-    if (total > 0 && rate < SEUIL_ALERTE) {
-      console.log('Envoi notification...');
-      const { status } = await Notifications.requestPermissionsAsync();
-      console.log('Permission status:', status);
-      if (status === 'granted') {
-        await notificationService.sendLocalNotification(
-          'Alerte absences',
-          `Votre taux de présence est de ${rate}%. Attention au seuil réglementaire.`
-        );
-        console.log('Notification envoyee !');
+    try {
+      const res = await attendanceApi.getHistory();
+      setData(res.data);
+      const { rate, total } = res.data;
+      if (total > 0 && rate < SEUIL_ALERTE) {
+        const { status } = await Notifications.requestPermissionsAsync();
+        if (status === 'granted') {
+          const notifAbsences = await AsyncStorage.getItem('notif_absences');
+          if (notifAbsences === null || notifAbsences === 'true') {
+            await notificationService.sendLocalNotification(
+              'Alerte absences',
+              `Votre taux de présence est de ${rate}%. Attention au seuil réglementaire.`
+            );
+          }
+        }
       }
+    } catch (e) {
+      console.log('Erreur:', e);
+    } finally {
+      setLoading(false);
     }
-  } catch (e) {
-    console.log('Erreur:', e);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   const handleSeed = async () => {
     try {
@@ -61,13 +61,11 @@ export default function AttendanceScreen() {
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 40 }}>
 
-      {/* Résumé global */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Mes Présences</Text>
         <Text style={styles.headerSub}>Année universitaire 2025 — 2026</Text>
       </View>
 
-      {/* Alerte seuil */}
       {alerte && (
         <View style={styles.alertBox}>
           <Text style={styles.alertText}>
@@ -76,7 +74,6 @@ export default function AttendanceScreen() {
         </View>
       )}
 
-      {/* Stats globales */}
       <View style={styles.statsRow}>
         <View style={[styles.statCard, { borderTopColor: '#0D47A1' }]}>
           <Text style={styles.statValue}>{rate}%</Text>
@@ -92,7 +89,6 @@ export default function AttendanceScreen() {
         </View>
       </View>
 
-      {/* Barre de progression globale */}
       <View style={styles.progressSection}>
         <View style={styles.progressBg}>
           <View style={[styles.progressFill, {
@@ -103,7 +99,6 @@ export default function AttendanceScreen() {
         <Text style={styles.progressLabel}>{rate}% de présence sur {total} séances</Text>
       </View>
 
-      {/* Liste des présences */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Historique</Text>
 
@@ -152,22 +147,17 @@ export default function AttendanceScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F4F6F9' },
   centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-
   header: {
     backgroundColor: '#0D47A1', padding: 24, paddingTop: 48,
   },
   headerTitle: { fontSize: 22, fontWeight: '700', color: '#fff' },
   headerSub: { fontSize: 13, color: 'rgba(255,255,255,0.75)', marginTop: 4 },
-
   alertBox: {
     backgroundColor: '#FDECEA', margin: 16, padding: 14,
     borderRadius: 8, borderLeftWidth: 4, borderLeftColor: '#C62828',
   },
   alertText: { color: '#C62828', fontSize: 14, lineHeight: 20 },
-
-  statsRow: {
-    flexDirection: 'row', margin: 16, gap: 10,
-  },
+  statsRow: { flexDirection: 'row', margin: 16, gap: 10 },
   statCard: {
     flex: 1, backgroundColor: '#fff', borderRadius: 8,
     padding: 14, alignItems: 'center',
@@ -175,7 +165,6 @@ const styles = StyleSheet.create({
   },
   statValue: { fontSize: 24, fontWeight: '700', color: '#0D47A1' },
   statLabel: { fontSize: 11, color: '#888', marginTop: 4, textAlign: 'center' },
-
   progressSection: { paddingHorizontal: 16, marginBottom: 8 },
   progressBg: {
     height: 8, backgroundColor: '#E0E0E0',
@@ -183,13 +172,11 @@ const styles = StyleSheet.create({
   },
   progressFill: { height: '100%', borderRadius: 4 },
   progressLabel: { fontSize: 12, color: '#888', marginTop: 6 },
-
   section: { margin: 16 },
   sectionTitle: {
     fontSize: 12, fontWeight: '700', color: '#888',
     textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12,
   },
-
   empty: { alignItems: 'center', paddingVertical: 40 },
   emptyText: { color: '#888', fontSize: 15, marginBottom: 20 },
   seedBtn: {
@@ -197,20 +184,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24, borderRadius: 8,
   },
   seedBtnText: { color: '#fff', fontWeight: '600' },
-
   row: {
     flexDirection: 'row', alignItems: 'center',
     backgroundColor: '#fff', borderRadius: 8,
     padding: 14, marginBottom: 8, elevation: 1,
   },
-  statusDot: {
-    width: 10, height: 10, borderRadius: 5, marginRight: 14,
-  },
+  statusDot: { width: 10, height: 10, borderRadius: 5, marginRight: 14 },
   rowInfo: { flex: 1 },
   rowSubject: { fontSize: 15, fontWeight: '600', color: '#1a1a2e' },
   rowDate: { fontSize: 12, color: '#888', marginTop: 2 },
-  statusBadge: {
-    paddingVertical: 4, paddingHorizontal: 10, borderRadius: 12,
-  },
+  statusBadge: { paddingVertical: 4, paddingHorizontal: 10, borderRadius: 12 },
   statusText: { fontSize: 12, fontWeight: '600' },
 });
