@@ -34,4 +34,9 @@ export class AttendanceController {
   seed(@Req() req) {
     return this.attendanceService.seedAttendances(req.user.sub);
   }
+
+  @Get('session/:qrCode')
+getSession(@Param('qrCode') qrCode: string) {
+  return this.attendanceService.getSessionAttendees(qrCode);
+}
 }

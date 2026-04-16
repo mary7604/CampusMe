@@ -32,7 +32,6 @@ export class AttendanceService {
       status: 'present',
     });
     await this.attendanceRepo.save(attendance);
-    activeQRCodes.delete(code);
     return { message: 'Presence enregistree' };
   }
 
@@ -72,4 +71,17 @@ export class AttendanceService {
     await this.attendanceRepo.save(records);
     return { message: '20 presences inserees' };
   }
+  async getSessionAttendees(qrCode: string) {
+  const records = await this.attendanceRepo.find({
+    where: { qrCode },
+    relations: ['student'],
+  });
+  return records.map(r => ({
+    id: r.student.id,
+    firstName: r.student.firstName,
+    lastName: r.student.lastName,
+    email: r.student.email,
+    scannedAt: r.date,
+  }));
+}
 }
