@@ -17,6 +17,7 @@ const COURSE_COLORS = [
 ];
 
 export default function TimetableScreen({ navigation }) {
+  // const { t } = useTranslation(); 
   const user = useSelector(s => s.auth.user);
   const [weekCourses, setWeekCourses] = useState({});
   const [loading, setLoading] = useState(true);

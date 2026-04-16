@@ -1,0 +1,12 @@
+{
+  "login": {
+    "title": "Connexion",
+    "email": "Email universitaire",
+    "password": "Mot de passe",
+    "button": "Se connecter",
+    "forgot": "Mot de passe oublié ?"
+  },
+  "language": {
+    "title": "Choisir la langue"
+  }
+}

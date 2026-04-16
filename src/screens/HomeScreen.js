@@ -11,10 +11,10 @@ import gradesApi from '../api/gradesApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import notificationService from '../services/notificationService';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+// import { useTranslation } from 'react-i18next';
 export default function HomeScreen({ navigation }) {
   const { user } = useAuth();
-
+  // const { t } = useTranslation(); 
   const [announcements, setAnnouncements] = useState([]);
   const [nextCourse, setNextCourse] = useState(null);
   const [average, setAverage] = useState(null);

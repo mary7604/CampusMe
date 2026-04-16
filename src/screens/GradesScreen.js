@@ -7,9 +7,10 @@ import useGrades from '../hooks/useGrades';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import notificationService from '../services/notificationService';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+// import { useTranslation } from 'react-i18next';
 
 function getColor(note) {
+
   if (note >= 16) return colors.success;
   if (note >= 12) return colors.primary;
   if (note >= 10) return colors.secondary;
@@ -24,6 +25,7 @@ function getStatus(note) {
 }
 
 export default function GradesScreen() {
+  // const { t } = useTranslation(); 
   const { grades, average, loading, error } = useGrades();
   useEffect(() => {
   const checkNewGrades = async () => {

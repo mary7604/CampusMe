@@ -1,0 +1,12 @@
+{
+  "login": {
+    "title": "Login",
+    "email": "University email",
+    "password": "Password",
+    "button": "Sign in",
+    "forgot": "Forgot password?"
+  },
+  "language": {
+    "title": "Choose language"
+  }
+}

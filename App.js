@@ -4,8 +4,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Text, View, ActivityIndicator } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-
+import './src/i18n';
 import store from './src/store';
+
 import LoginScreen               from './src/screens/LoginScreen';
 import RegisterScreen            from './src/screens/RegisterScreen';
 import HomeScreen                from './src/screens/HomeScreen';
@@ -18,6 +19,11 @@ import ProfStack                 from './src/navigation/ProfStack';
 import AttendanceScreen          from './src/screens/AttendanceScreen';
 import AnnouncementsScreen       from './src/screens/AnnouncementsScreen';       // ← nouveau
 import AnnouncementDetailScreen  from './src/screens/AnnouncementDetailScreen';  // ← nouveau
+
+import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen';
+import HelpScreen from './src/screens/HelpScreen';
+import NotificationsScreen from './src/screens/NotificationsScreen';
+import LanguageScreen from './src/screens/LanguageScreen';
 
 const Tab          = createBottomTabNavigator();
 const Stack        = createStackNavigator();
@@ -42,7 +48,7 @@ function MainTabs() {
       }}
     >
       <Tab.Screen name="Home" component={HomeScreen}
-        options={{ tabBarLabel: 'Accueil', tabBarIcon: ({ color }) => <Text style={{ fontSize: 22, color }}>🏠</Text> }} />
+        options={{ tabBarLabel: 'Accueil', tabBarIcon: ({ color }) => <Text style={{ fontSize: 22, color }}></Text> }} />
       <Tab.Screen name="Timetable" component={TimetableScreen}
         options={{ tabBarLabel: 'EDT',     tabBarIcon: ({ color }) => <Text style={{ fontSize: 22, color }}>📅</Text> }} />
       <Tab.Screen name="Map" component={MapScreen}
@@ -88,6 +94,54 @@ function StudentNavigator() {
         }}
       />
       <StudentStack.Screen
+        name="ForgotPassword"
+        component={ForgotPasswordScreen}
+        options={{
+          headerShown: true,
+          headerTitle: 'Mot de passe',
+          headerStyle: { backgroundColor: '#0D47A1' },
+          headerTintColor: '#fff',
+          headerTitleStyle: { fontWeight: '600' },
+          headerTitleAlign: 'center',
+        }}
+      />
+      <StudentStack.Screen
+        name="Notifications"
+        component={NotificationsScreen}
+        options={{
+          headerShown: true,
+          headerTitle: 'Notifications',
+          headerStyle: { backgroundColor: '#0D47A1' },
+          headerTintColor: '#fff',
+          headerTitleStyle: { fontWeight: '600' },
+          headerTitleAlign: 'center',
+        }}
+      />
+      <StudentStack.Screen
+        name="Language"
+        component={LanguageScreen}
+        options={{
+          headerShown: true,
+          headerTitle: 'Langue',
+          headerStyle: { backgroundColor: '#0D47A1' },
+          headerTintColor: '#fff',
+          headerTitleStyle: { fontWeight: '600' },
+          headerTitleAlign: 'center',
+        }}
+      />
+      <StudentStack.Screen
+        name="Help"
+        component={HelpScreen}
+        options={{
+          headerShown: true,
+          headerTitle: 'Aide et support',
+          headerStyle: { backgroundColor: '#0D47A1' },
+          headerTintColor: '#fff',
+          headerTitleStyle: { fontWeight: '600' },
+          headerTitleAlign: 'center',
+        }}
+      />
+      <StudentStack.Screen
         name="Attendance"
         component={AttendanceScreen}
         options={{
@@ -124,6 +178,7 @@ function AppNavigator() {
           <>
             <Stack.Screen name="Login"    component={LoginScreen} />
             <Stack.Screen name="Register" component={RegisterScreen} />
+            <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
           </>
         ) : user?.role === 'professeur' ? (
           <Stack.Screen name="ProfMain" component={ProfStack} />

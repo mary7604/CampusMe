@@ -1,9 +1,10 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { startStyles as styles } from '../styles/StartStyles';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+// import { useTranslation } from 'react-i18next';
 
 export default function StartScreen({ navigation }) {
+  // const { t } = useTranslation(); 
   return (
     <SafeAreaView style={{ flex: 1 }} edges={[]}>
     <View style={styles.container}>

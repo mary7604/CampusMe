@@ -32,4 +32,8 @@ export class RegisterDto {
   @IsOptional()
   @IsString()
   group?: string;
+
+  @IsOptional()
+  @IsString()
+  departement?: string;
 }

@@ -6,13 +6,14 @@ import colors from '../styles/colors';
 import gradesApi from '../api/gradesApi';
 import useAuth from '../hooks/useAuth';
 import { SafeAreaView } from 'react-native-safe-area-context';
+// import { useTranslation } from 'react-i18next';
 
 
 export default function AddGradeScreen({ navigation }) {
   const { user } = useAuth();
   const route = useRoute();
   const selectedStudent = route.params?.student;
-
+  // const { t } = useTranslation(); 
   const [studentId, setStudentId] = useState(selectedStudent?.id?.toString() || '');
   const [subject, setSubject] = useState('');
   const [note, setNote] = useState('');

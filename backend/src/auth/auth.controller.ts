@@ -25,4 +25,8 @@ export class AuthController {
   getMe(@Req() req) {
     return this.authService.getMe(req.user.sub);
   }
+  @Post('reset-password')
+resetPassword(@Body() body: { email: string; newPassword: string }) {
+  return this.authService.resetPassword(body.email, body.newPassword);
+}
 }

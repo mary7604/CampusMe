@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import attendanceApi from '../api/attendanceApi';
+// import { useTranslation } from 'react-i18next';
 
 export default function ScanQRScreen({ navigation }) {
+  // const { t } = useTranslation(); 
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
   const [loading, setLoading] = useState(false);

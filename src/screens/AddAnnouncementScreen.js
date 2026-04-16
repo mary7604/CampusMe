@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity, Alert,
@@ -5,6 +6,7 @@ import {
 } from 'react-native';
 import announcementsApi from '../api/announcementsApi';
 import useAuth from '../hooks/useAuth';
+
 
 const FILIERES = ['all', 'Genie Informatique', 'Genie Civil', 'Genie Electrique'];
 const GROUPES  = ['all', 'Groupe A', 'Groupe B', 'Groupe C', 'Groupe D'];
