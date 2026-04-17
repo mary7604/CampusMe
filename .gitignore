@@ -39,3 +39,7 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+app.json
+google-services.json
+src/config/api.config.js
+src/services/notificationService.js
