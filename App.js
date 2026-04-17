@@ -19,25 +19,17 @@ import GradesScreen              from './src/screens/GradesScreen';
 import ScanQRScreen              from './src/screens/ScanQRScreen';
 import ProfStack                 from './src/navigation/ProfStack';
 import AttendanceScreen          from './src/screens/AttendanceScreen';
-import AnnouncementsScreen       from './src/screens/AnnouncementsScreen';
-import AnnouncementDetailScreen  from './src/screens/AnnouncementDetailScreen';
-import ForgotPasswordScreen      from './src/screens/ForgotPasswordScreen';
-import HelpScreen                from './src/screens/HelpScreen';
-import NotificationsScreen       from './src/screens/NotificationsScreen';
-import LanguageScreen            from './src/screens/LanguageScreen';
+import AnnouncementsScreen       from './src/screens/AnnouncementsScreen';       // ← nouveau
+import AnnouncementDetailScreen  from './src/screens/AnnouncementDetailScreen';  // ← nouveau
+
+import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen';
+import HelpScreen from './src/screens/HelpScreen';
+import NotificationsScreen from './src/screens/NotificationsScreen';
+import LanguageScreen from './src/screens/LanguageScreen';
 
 const Tab          = createBottomTabNavigator();
 const Stack        = createStackNavigator();
 const StudentStack = createStackNavigator();
-
-const headerStyle  = { backgroundColor: '#0D47A1' };
-const headerOptions = {
-  headerShown: true,
-  headerStyle,
-  headerTintColor: '#fff',
-  headerTitleStyle: { fontWeight: '600' },
-  headerTitleAlign: 'center',
-};
 
 function MainTabs() {
   const insets = useSafeAreaInsets();
@@ -59,45 +51,15 @@ function MainTabs() {
       }}
     >
       <Tab.Screen name="Home" component={HomeScreen}
-        options={{
-          tabBarLabel: 'Accueil',
-          tabBarIcon: ({ color, size }) => (
-            <Text style={{ fontSize: size || 22, color }}>⌂</Text>
-          ),
-        }}
-      />
+        options={{ tabBarLabel: 'Accueil', tabBarIcon: ({ color }) => <Text style={{ fontSize: 22, color }}></Text> }} />
       <Tab.Screen name="Timetable" component={TimetableScreen}
-        options={{
-          tabBarLabel: 'EDT',
-          tabBarIcon: ({ color, size }) => (
-            <Text style={{ fontSize: size || 20, color }}>▦</Text>
-          ),
-        }}
-      />
+        options={{ tabBarLabel: 'EDT',     tabBarIcon: ({ color }) => <Text style={{ fontSize: 22, color }}>📅</Text> }} />
       <Tab.Screen name="Map" component={MapScreen}
-        options={{
-          tabBarLabel: 'Campus',
-          tabBarIcon: ({ color, size }) => (
-            <Text style={{ fontSize: size || 20, color }}>◉</Text>
-          ),
-        }}
-      />
+        options={{ tabBarLabel: 'Campus',  tabBarIcon: ({ color }) => <Text style={{ fontSize: 22, color }}>🗺️</Text> }} />
       <Tab.Screen name="Grades" component={GradesScreen}
-        options={{
-          tabBarLabel: 'Notes',
-          tabBarIcon: ({ color, size }) => (
-            <Text style={{ fontSize: size || 20, color }}>≡</Text>
-          ),
-        }}
-      />
+        options={{ tabBarLabel: 'Notes',   tabBarIcon: ({ color }) => <Text style={{ fontSize: 22, color }}>📊</Text> }} />
       <Tab.Screen name="Profile" component={ProfileScreen}
-        options={{
-          tabBarLabel: 'Profil',
-          tabBarIcon: ({ color, size }) => (
-            <Text style={{ fontSize: size || 20, color }}>◯</Text>
-          ),
-        }}
-      />
+        options={{ tabBarLabel: 'Profil',  tabBarIcon: ({ color }) => <Text style={{ fontSize: 22, color }}>👤</Text> }} />
     </Tab.Navigator>
   );
 }
@@ -105,21 +67,96 @@ function MainTabs() {
 function StudentNavigator() {
   return (
     <StudentStack.Navigator screenOptions={{ headerShown: false }}>
+
+      {/* ── écrans principaux ── */}
       <StudentStack.Screen name="MainTabs"  component={MainTabs} />
-      <StudentStack.Screen name="Announcements" component={AnnouncementsScreen} options={{ headerShown: false }} />
-      <StudentStack.Screen name="AnnouncementDetail" component={AnnouncementDetailScreen} options={{ headerShown: false }} />
-      <StudentStack.Screen name="ScanQR" component={ScanQRScreen}
-        options={{ ...headerOptions, headerTitle: 'Scanner QR Code' }} />
-      <StudentStack.Screen name="ForgotPassword" component={ForgotPasswordScreen}
-        options={{ ...headerOptions, headerTitle: 'Mot de passe' }} />
-      <StudentStack.Screen name="Notifications" component={NotificationsScreen}
-        options={{ ...headerOptions, headerTitle: 'Notifications' }} />
-      <StudentStack.Screen name="Language" component={LanguageScreen}
-        options={{ ...headerOptions, headerTitle: 'Langue' }} />
-      <StudentStack.Screen name="Help" component={HelpScreen}
-        options={{ ...headerOptions, headerTitle: 'Aide et support' }} />
-      <StudentStack.Screen name="Attendance" component={AttendanceScreen}
-        options={{ ...headerOptions, headerTitle: 'Mes Presences' }} />
+
+      {/* ── annonces ── */}
+      <StudentStack.Screen
+        name="Announcements"
+        component={AnnouncementsScreen}
+        options={{ headerShown: false }}   // header géré dans le composant lui-même
+      />
+      <StudentStack.Screen
+        name="AnnouncementDetail"
+        component={AnnouncementDetailScreen}
+        options={{ headerShown: false }}   // idem
+      />
+
+      {/* ── autres écrans existants ── */}
+      <StudentStack.Screen
+        name="ScanQR"
+        component={ScanQRScreen}
+        options={{
+          headerShown:      true,
+          headerTitle:      'Scanner QR Code',
+          headerStyle:      { backgroundColor: '#0D47A1' },
+          headerTintColor:  '#fff',
+          headerTitleStyle: { fontWeight: '600' },
+          headerTitleAlign: 'center',
+        }}
+      />
+      <StudentStack.Screen
+        name="ForgotPassword"
+        component={ForgotPasswordScreen}
+        options={{
+          headerShown: true,
+          headerTitle: 'Mot de passe',
+          headerStyle: { backgroundColor: '#0D47A1' },
+          headerTintColor: '#fff',
+          headerTitleStyle: { fontWeight: '600' },
+          headerTitleAlign: 'center',
+        }}
+      />
+      <StudentStack.Screen
+        name="Notifications"
+        component={NotificationsScreen}
+        options={{
+          headerShown: true,
+          headerTitle: 'Notifications',
+          headerStyle: { backgroundColor: '#0D47A1' },
+          headerTintColor: '#fff',
+          headerTitleStyle: { fontWeight: '600' },
+          headerTitleAlign: 'center',
+        }}
+      />
+      <StudentStack.Screen
+        name="Language"
+        component={LanguageScreen}
+        options={{
+          headerShown: true,
+          headerTitle: 'Langue',
+          headerStyle: { backgroundColor: '#0D47A1' },
+          headerTintColor: '#fff',
+          headerTitleStyle: { fontWeight: '600' },
+          headerTitleAlign: 'center',
+        }}
+      />
+      <StudentStack.Screen
+        name="Help"
+        component={HelpScreen}
+        options={{
+          headerShown: true,
+          headerTitle: 'Aide et support',
+          headerStyle: { backgroundColor: '#0D47A1' },
+          headerTintColor: '#fff',
+          headerTitleStyle: { fontWeight: '600' },
+          headerTitleAlign: 'center',
+        }}
+      />
+      <StudentStack.Screen
+        name="Attendance"
+        component={AttendanceScreen}
+        options={{
+          headerShown:      true,
+          headerTitle:      'Mes Présences',
+          headerStyle:      { backgroundColor: '#0D47A1' },
+          headerTintColor:  '#fff',
+          headerTitleStyle: { fontWeight: '600' },
+          headerTitleAlign: 'center',
+        }}
+      />
+
     </StudentStack.Navigator>
   );
 }
@@ -142,8 +179,8 @@ function AppNavigator() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {!isLoggedIn ? (
           <>
-            <Stack.Screen name="Login"          component={LoginScreen} />
-            <Stack.Screen name="Register"       component={RegisterScreen} />
+            <Stack.Screen name="Login"    component={LoginScreen} />
+            <Stack.Screen name="Register" component={RegisterScreen} />
             <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
           </>
         ) : user?.role === 'professeur' ? (
