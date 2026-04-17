@@ -87,11 +87,12 @@ export default function HomeScreen({ navigation }) {
   };
 
   const quickAccess = [
-    { label: 'Emploi\ndu temps',  screen: 'Timetable' },
-    { label: 'Campus\nNavigator', screen: 'Map'       },
-    { label: 'Mes\nPresences',    screen: 'Attendance' },
-    { label: 'Mes\nNotes',        screen: 'Grades'    },
-  ];
+  { label: 'Emploi\ndu temps',  screen: 'Timetable' },
+  { label: 'Campus\nNavigator', screen: 'Map'       },
+  { label: 'Mes\nPresences',    screen: 'Attendance' },
+  { label: 'Mes\nNotes',        screen: 'Grades'    },
+  { label: 'Scanner\nQR',       screen: 'ScanQR'    },
+];
 
   return (
 <SafeAreaView style={{ flex: 1 }} edges={['top']}>
