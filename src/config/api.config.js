@@ -1,8 +1,8 @@
 const API_CONFIG = {
-  BASE_URL: 'http://172.25.5.214:3000',
+  BASE_URL: 'http://192.168.1.103:3000',
   TIMEOUT: 10000,
 };
 
 export default API_CONFIG;
 
-// a changer !!192.168.1.103
+// a changer !!192.168.1.103  172.25.5.214
