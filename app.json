@@ -12,17 +12,26 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "ios": { "supportsTablet": true },
+    "ios": {
+      "supportsTablet": true
+    },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": false,
-      "package": "com.imane1111.CampusMe",
-      "googleServicesFile": "./google-services.json"
+      "edgeToEdgeEnabled": true,
+      "package": "com.mary_sam.CampusMe",
+      "googleServicesFile": "./google-services.json",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDf2NxOt0O27IXEhIUb5RJ0YT5-4OxYUoE"
+        }
+      }
     },
-    "web": { "favicon": "./assets/favicon.png" },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
     "plugins": [
       "expo-secure-store",
       [
@@ -35,9 +44,9 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "2bdb4272-5a30-48ab-bb84-6d4f0c8cb50d"
+        "projectId": "740a1fbe-6d68-4c3d-b21d-f45a6efe0be7"
       }
     },
-    "owner": "imane1111"
+    "owner": "mimi_sam"
   }
 }

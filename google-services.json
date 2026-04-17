@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "98117499560",
-    "project_id": "campusme-c81b4",
-    "storage_bucket": "campusme-c81b4.firebasestorage.app"
+    "project_number": "1013630358960",
+    "project_id": "campusme-eef98",
+    "storage_bucket": "campusme-eef98.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:98117499560:android:f6014030b2d812e743209d",
+        "mobilesdk_app_id": "1:1013630358960:android:39cdd3974b70cb0c60b275",
         "android_client_info": {
-          "package_name": "com.kiramedaoudi.CampusMe"
+          "package_name": "com.mary_sam.CampusMe"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBHPdoTnZBkETAVKuVj5789SzKLie9sH8c"
+          "current_key": "AIzaSyDf2NxOt0O27IXEhIUb5RJ0YT5-4OxYUoE"
         }
       ],
       "services": {
