@@ -19,8 +19,8 @@ import GradesScreen              from './src/screens/GradesScreen';
 import ScanQRScreen              from './src/screens/ScanQRScreen';
 import ProfStack                 from './src/navigation/ProfStack';
 import AttendanceScreen          from './src/screens/AttendanceScreen';
-import AnnouncementsScreen       from './src/screens/AnnouncementsScreen';       // ← nouveau
-import AnnouncementDetailScreen  from './src/screens/AnnouncementDetailScreen';  // ← nouveau
+import AnnouncementsScreen       from './src/screens/AnnouncementsScreen';      
+import AnnouncementDetailScreen  from './src/screens/AnnouncementDetailScreen';  
 
 import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen';
 import HelpScreen from './src/screens/HelpScreen';

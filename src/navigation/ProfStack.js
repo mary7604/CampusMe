@@ -20,7 +20,7 @@ function ProfGuard({ children }) {
    return (
   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
     <Text style={{ fontSize: 16, textAlign: 'center' }}>
-      🔒 Accès réservé aux professeurs
+       Accès réservé aux professeurs
     </Text>
   </View>
 );

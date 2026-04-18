@@ -8,8 +8,8 @@ import ManageGradesScreen           from "../screens/prof/ManageGradesScreen";
 import GenerateQRScreen             from "../screens/prof/GenerateQRScreen";
 import ScanQRScreen                 from "../screens/ScanQRScreen";
 import StudentGradesScreen          from '../screens/prof/StudentGradesScreen';
-import AnnouncementsScreen          from '../screens/AnnouncementsScreen';       // ← manquait
-import AnnouncementDetailScreen     from '../screens/AnnouncementDetailScreen';  // ← manquait
+import AnnouncementsScreen          from '../screens/AnnouncementsScreen';     
+import AnnouncementDetailScreen     from '../screens/AnnouncementDetailScreen';  
 
 const Stack = createNativeStackNavigator();
 

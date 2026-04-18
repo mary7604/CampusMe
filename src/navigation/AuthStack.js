@@ -7,7 +7,7 @@ const Stack = createNativeStackNavigator();
 function AuthStack({ setIsLoggedIn }) {
   return (
     <Stack.Navigator initialRouteName="Start">
-    {/*                                   ↑
+    {/*                                   
                            Start = premier écran ! */}
 
       {/* ÉCRAN START */}
