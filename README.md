@@ -4,7 +4,7 @@ CampusMe est une application mobile développée avec **React Native** et **Expo
 
 ---
 
-## 📱 Aperçu
+##  Aperçu
 
 CampusMe offre une expérience mobile complète avec :
 - Navigation intuitive par onglets et par stack
@@ -16,7 +16,7 @@ CampusMe offre une expérience mobile complète avec :
 
 ---
 
-## 🛠️ Stack technique
+##  Stack technique
 
 | Technologie | Version |
 |---|---|
@@ -28,7 +28,7 @@ CampusMe offre une expérience mobile complète avec :
 
 ---
 
-## 📦 Installation
+##  Installation
 
 ### Prérequis
 
@@ -51,7 +51,7 @@ npm install
 
 ---
 
-## 🚀 Lancer l'application
+##  Lancer l'application
 
 ```bash
 # Démarrer le serveur Expo
@@ -69,7 +69,7 @@ npm run web
 
 ---
 
-## 📂 Structure du projet
+##  Structure du projet
 
 ```
 CampusMe/
@@ -85,7 +85,7 @@ CampusMe/
 
 ---
 
-## 📚 Librairies utilisées
+##  Librairies utilisées
 
 ### Navigation
 - `@react-navigation/native` — Navigation principale
@@ -116,18 +116,18 @@ CampusMe/
 
 ---
 
-## ⚙️ Backend
+##  Backend
 
 Le dossier `backend/` contient le serveur de l'application. Consulte le README interne du backend pour les instructions de démarrage.
 
 ---
 
-## 🤝 Contribution
+##  Contribution
 
 Les contributions sont les bienvenues ! N'hésite pas à ouvrir une issue ou une pull request.
 
 ---
 
-## 📄 Licence
+##  Licence
 
 Ce projet est privé. Tous droits réservés © 2025 mary7604.
